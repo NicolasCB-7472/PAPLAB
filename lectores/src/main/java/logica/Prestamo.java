@@ -7,11 +7,6 @@ public class Prestamo{
     private Date fechaDevolucion;
     private EstadoPrestamo estado;
 
-    public(){
-        super(); //opcional ya que en si se hereda el constructor de la clase objetos 
-
-    }
-
     //constructores
 
     public Prestamo(){
