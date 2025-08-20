@@ -1,6 +1,6 @@
 package logica;
 import java.util.Date;
-
+import datatypes.EstadoPrestamo;
 
 public class Prestamo{
     private Date fechaSolicitud;
