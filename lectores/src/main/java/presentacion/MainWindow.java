@@ -1,16 +1,16 @@
 package presentacion;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JLabel;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.BorderLayout;
+import javax.swing.JPanel;
 
 public class MainWindow implements ActionListener {
 
@@ -145,6 +145,12 @@ public class MainWindow implements ActionListener {
             String text = item.getText();
             System.out.println(text);
             // Aqui va donde se abren las ventanas
+            switch(text){
+                case "Agregar Lector": 
+                    AgregarLectorWindow agregarLect = new AgregarLectorWindow();
+                    agregarLect.show();
+                
+            }
             javax.swing.JOptionPane.showMessageDialog(window, "Seleccionaste: " + text);
         }
     }
