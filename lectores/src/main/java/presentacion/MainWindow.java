@@ -146,10 +146,13 @@ public class MainWindow implements ActionListener {
             System.out.println(text);
             // Aqui va donde se abren las ventanas
             switch(text){
+                case "Agregar Bibliotecario":
+                    AgregarBibliotecarioWindows agregarBiblio = new AgregarBibliotecarioWindows();
+                    break;
                 case "Agregar Lector": 
                     AgregarLectorWindow agregarLect = new AgregarLectorWindow();
                     agregarLect.show();
-                
+                    break;
             }
             javax.swing.JOptionPane.showMessageDialog(window, "Seleccionaste: " + text);
         }
