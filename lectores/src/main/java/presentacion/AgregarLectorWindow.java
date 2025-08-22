@@ -78,7 +78,7 @@ public class AgregarLectorWindow implements ActionListener {
         direccionField = new JTextField(20);
         
         zonaLabel = new JLabel("Zona:");
-        String[] zonas = {"", "", "", "", "", ""};
+        String[] zonas = {"", "BIBLIOTECA_CENTRAL", "SUCURSAL_ESTE", "SUCURSAL_OESTE", "BIBLIOTECA_INFANTIL", "ARCHIVO_GENERAL"};
         zonaCombo = new JComboBox<>(zonas);
         
         // Agregar componentes al panel del formulario insertas lo que creaste arriba
