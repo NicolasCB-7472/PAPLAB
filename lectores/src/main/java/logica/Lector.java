@@ -1,7 +1,4 @@
 package logica;
-
-import java.sql.Date;
-
 import datatypes.EstadoLector;
 import datatypes.Zona;
 
@@ -9,6 +6,7 @@ public class Lector extends Usuario{
     private String direccion;
     private Date FechaRegistro;
     private EstadoLector estado = EstadoLector.ACTIVO;
+
     private Zona zona;
 
     //Constructores
