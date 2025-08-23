@@ -7,8 +7,6 @@ import persistencia.Conexion;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.type.descriptor.java.IntegerJavaType;
-
 public class ManejadorMaterial {
     private static ManejadorMaterial instancia = null;
 
@@ -60,7 +58,7 @@ public class ManejadorMaterial {
         for(Material m: listMaterial){
             ret_list.add(new Integer(m.getId()));
         }
-        
+
         return ret_list;
     }
 
