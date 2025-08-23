@@ -15,7 +15,7 @@ public interface IControlador{
 
     public void cambiarEstadoLector(String email , EstadoLector nuevoEstado) throws NoExisteUsuarioException , ValorIncorrectoDeEstadoException;
 
-    public void cambiarZonaLector(String email , Zona nuevaZona)throws ValorIncorrectoDeZonaException;
+    public void cambiarZonaLector(String email , Zona nuevaZona)throws NoExisteUsuarioException, ValorIncorrectoDeZonaException;
 
     ////
 }
