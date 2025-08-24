@@ -56,7 +56,8 @@ public class ManejadorMaterial {
         
         ArrayList<Integer> ret_list = new ArrayList<>();
         for(Material m: listMaterial){
-            ret_list.add(new Integer(m.getId()));
+            // Agregar new, lanza un problema de resolucion de tipo a Integer.valueOf()
+            ret_list.add(Integer.valueOf(m.getId()));
         }
 
         return ret_list;
