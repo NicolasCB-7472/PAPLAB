@@ -1,5 +1,10 @@
 package logica;
 
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+
+@Entity
+@DiscriminatorValue("B")
 public class Bibliotecario extends Usuario {
     private String numeroEmpleado;
 

@@ -1,8 +1,15 @@
 package logica;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.Id;
+
+@Entity
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 public abstract class Usuario {
-    
     private String nombre;
+    @Id
     private String email;
 
     // Constructores
