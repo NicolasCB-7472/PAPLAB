@@ -7,6 +7,7 @@ import excepciones.NoExisteUsuarioException;
 import excepciones.ValorIncorrectoDeEstadoException;
 import excepciones.ValorIncorrectoDeZonaException;
 import interfaces.IControlador;
+import java.sql.Date;
 
 public class Controlador implements IControlador{
     private static Controlador instancia = null;
@@ -20,7 +21,7 @@ public class Controlador implements IControlador{
         return instancia;
     }
     //Funciones de las historias de usuario
-    public void  registrarLector(String nombre, String email, String direccion, Zona zona)throws ExisteUsuarioException{
+    public void  registrarLector(String nombre, String email, String direccion, Zona zona, Date fecha)throws ExisteUsuarioException{
 
         ManejadorUsuario MU = ManejadorUsuario.getInstancia();
         boolean existe = MU.existeUsuario(email);
@@ -28,7 +29,7 @@ public class Controlador implements IControlador{
             throw new ExisteUsuarioException("Ya existe un usuario con el email dado");
         }
         else{
-            Lector L = new Lector(nombre, email, direccion, zona);
+            Lector L = new Lector(nombre, email, direccion, zona, fecha);
             MU.agregarUsuario(L);
         }
     }

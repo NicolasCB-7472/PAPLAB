@@ -1,6 +1,7 @@
 package logica;
 import datatypes.EstadoLector;
 import datatypes.Zona;
+import java.sql.Date;
 
 public class Lector extends Usuario{
     private String direccion;
@@ -13,11 +14,11 @@ public class Lector extends Usuario{
     public Lector(){
         super();
     }
-    public Lector(String nombre, String email, String direccion, Zona zona){
+    public Lector(String nombre, String email, String direccion, Zona zona, Date fecha){
         super(nombre , email);
         this.direccion = direccion;
         this.zona = zona;
-        //Definir como se setea la Fecha de registro.
+        this.FechaRegistro=fecha;
     }
     //Setters and Getters
     public String getDireccion(){
