@@ -1,6 +1,6 @@
 package datatypes;
 import logica.Material;
-
+import java.sql.Date
 public abstract class DtMaterial  {
     private String id;
     private Date fechaIngreso;
