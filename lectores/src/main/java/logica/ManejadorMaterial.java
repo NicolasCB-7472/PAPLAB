@@ -1,5 +1,9 @@
 package logica;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
+import persistencia.Conexion;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,18 +20,45 @@ public class ManejadorMaterial {
     }
 
     public void agregarMaterial(Material material_nuevo){
+        Conexion conexion = Conexion.getInstancia();
+        EntityManager em = conexion.getEntityManager();
 
+        em.getTransaction().begin();
+
+        em.persist(material_nuevo);
+
+        em.getTransaction().commit();
     }
 
-    public void buscarMaterial(Material id){
+    public Material buscarMaterial(Material id){
+        Conexion conexion = Conexion.getInstancia();
+        EntityManager em = conexion.getEntityManager();
 
-        // return Material (objeto material encontrado)
+        Material mats = em.find(Material.class, id);
+
+        return mats;
     }
 
     public ArrayList<Integer> obtenerMateriales(){
-        //Obtiene conexion
+        Conexion conexion = Conexion.getInstancia();
+        EntityManager em = conexion.getEntityManager();
+
+        Query query = em.createQuery("select m from Material m");
+        
+        List<?> rawList = query.getResultList();
+        List<Material> listMaterial = new ArrayList<>();
+        
+        for(Object obj : rawList){
+            if(obj instanceof Material){
+                listMaterial.add((Material) obj);
+            }
+        }
         
         ArrayList<Integer> ret_list = new ArrayList<>();
+        for(Material m: listMaterial){
+            // Agregar new, lanza un problema de resolucion de tipo a Integer.valueOf()
+            ret_list.add(Integer.valueOf(m.getId()));
+        }
 
         return ret_list;
     }
