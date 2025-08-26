@@ -1,0 +1,18 @@
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.1" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+    <persistence-unit name="lectoreshibernate" transaction-type="RESOURCE_LOCAL">
+        <class>logica.Usuario</class>
+        <class>logica.Bibliotecario</class>
+        <class>logica.Lector</class>
+        <class>logica.Material</class>
+        <class>logica.Articulo</class>
+        <class>logica.Libro</class>
+    <properties>
+        <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+        <property name="hibernate.hbm2ddl.auto" value="create"/>
+        <property name="hibernate.connection.username" value=""/>
+        <property name="hibernate.connection.password" value=""/>
+        <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/gymbd"/>
+        <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+    </properties>
+    </persistence-unit>
+</persistence>
