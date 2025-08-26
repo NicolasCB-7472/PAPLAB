@@ -1,5 +1,4 @@
 package datatypes;
-import logica.Material;
 import java.sql.Date;
 public abstract class DtMaterial  {
     private String id;
@@ -16,11 +15,7 @@ public abstract class DtMaterial  {
         this.id = id;
         this.fechaIngreso = fechaIng;
     }
-    public DtMaterial(Material M){// Esto quiero preguntarle al Yona
-        super();
-        this.id = M.getId();
-        this.fechaIngreso = M.getFechaIngreso();
-    }
+
     // Getters
     public String getId(){
         return this.id;

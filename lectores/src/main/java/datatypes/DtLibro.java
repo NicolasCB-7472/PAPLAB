@@ -1,6 +1,5 @@
 package datatypes;
 import java.sql.Date;
-import logica.Libro;
 
 public class DtLibro extends DtMaterial{
     private String titulo;    
