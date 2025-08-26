@@ -17,12 +17,6 @@ public class DtArticulo extends DtMaterial{
         this.descripcion = descripcion;
         this.dimensiones = dimensiones;
     }
-    public DtArticulo(Articulo A){// Esto quiero preguntarle al Yona
-        super(A.getId(), A.getFechaIngreso());
-        this.pesoKg = A.getPeso();
-        this.descripcion = A.getDescripcion();
-        this.dimensiones = A.getDimensiones();
-    }
 
     // Getters y setters
 
