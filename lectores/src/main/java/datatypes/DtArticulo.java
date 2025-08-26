@@ -1,6 +1,6 @@
 package datatypes;
 import logica.Articulo;
-import java.sql.Date
+import java.sql.Date;
     
 public class DtArticulo extends DtMaterial{
     private float pesoKg;
