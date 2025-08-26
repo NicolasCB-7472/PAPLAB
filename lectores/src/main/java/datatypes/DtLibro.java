@@ -15,11 +15,7 @@ public class DtLibro extends DtMaterial{
         this.titulo = titulo;
         this.cantPaginas = cantPaginas;
     }
-    public DtLibro(Libro L){ // Esto quiero preguntarle al Yona
-        super(L.getId(),L.getFechaIngreso());
-        this.titulo = L.getTitulo();
-        this.cantPaginas = L.getCantPaginas();
-    }
+
     // Getters y setter
     public String getTitulo(){
         return this.titulo;
