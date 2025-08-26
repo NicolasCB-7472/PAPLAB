@@ -59,8 +59,15 @@ public class ManejadorUsuario {
             for(Usuario u: listUsuario) {
                 ret_list.add(new String(u.getEmail()));
             }
-        
             return ret_list;
+        }
+        
+        public boolean existeUsuario(String email){
+            return false;
+        }
+        
+        public Usuario darUsuario(String email){
+            return new Lector();
         }
 
 }
