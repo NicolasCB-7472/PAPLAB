@@ -15,7 +15,6 @@ public class AgregarBibliotecarioWindows implements ActionListener {
     private JTextField nombreField;
     private JTextField emailField;
     private JTextField numeroEmpleadoField;
-    private JComboBox<String> zonaCombo;
     
 
     //Botones

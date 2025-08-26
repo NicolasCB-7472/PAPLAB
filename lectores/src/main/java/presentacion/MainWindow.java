@@ -148,6 +148,7 @@ public class MainWindow implements ActionListener {
             switch(text){
                 case "Agregar Bibliotecario":
                     AgregarBibliotecarioWindows agregarBiblio = new AgregarBibliotecarioWindows();
+                    agregarBiblio.show();
                     break;
                 case "Agregar Lector": 
                     AgregarLectorWindow agregarLect = new AgregarLectorWindow();
