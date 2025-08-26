@@ -153,8 +153,15 @@ public class MainWindow implements ActionListener {
                     AgregarLectorWindow agregarLect = new AgregarLectorWindow();
                     agregarLect.show();
                     break;
+                case "Agregar Libro":
+                    AgregarLibroWindow agregarLibro = new AgregarLibroWindow();
+                    agregarLibro.show();
+                    break;
+                case "Agregar Articulo":
+                    AgregarArticuloWindow agregarArticulo = new AgregarArticuloWindow();
+                    agregarArticulo.show();
+                    break;
             }
-            javax.swing.JOptionPane.showMessageDialog(window, "Seleccionaste: " + text);
         }
     }
 
