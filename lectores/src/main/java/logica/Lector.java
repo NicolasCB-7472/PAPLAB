@@ -3,6 +3,11 @@ import datatypes.EstadoLector;
 import datatypes.Zona;
 import java.sql.Date;
 
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+
+@Entity
+@DiscriminatorValue("L")
 public class Lector extends Usuario{
     private String direccion;
     private Date FechaRegistro;

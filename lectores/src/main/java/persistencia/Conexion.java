@@ -21,12 +21,14 @@ public class Conexion {
     }
 
     public EntityManager getEntityManager() {
+        System.out.println("\nConexión establecida correctamente!\n");
         return Conexion.em;
     }
 
     public void close() {
         Conexion.em.close();
         Conexion.emf.close();
+        System.out.println("\nConexión finaliza correctamente!\n");
     }
 }
 

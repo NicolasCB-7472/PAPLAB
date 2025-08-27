@@ -2,6 +2,11 @@ package logica;
 
 import java.sql.Date;
 
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+
+@Entity
+@DiscriminatorValue("A")
 public class Articulo extends Material{
     private float pesoKg;
     private String descripcion;

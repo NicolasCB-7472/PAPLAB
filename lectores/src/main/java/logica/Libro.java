@@ -2,6 +2,11 @@ package logica;
 
 import java.sql.Date;
 
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+
+@Entity
+@DiscriminatorValue("L")
 public class Libro extends Material{
     private String titulo;    
     private int cantPaginas; // Lo hice int en vez de string porque tiene mas sentido.

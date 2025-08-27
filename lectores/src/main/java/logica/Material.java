@@ -1,6 +1,15 @@
 package logica;
 import java.sql.Date;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.Id;
+
+@Entity
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 public abstract class Material {
+    @Id
     private String id;
     private Date fechaIngreso;
     
