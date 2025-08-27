@@ -7,12 +7,11 @@
         <class>logica.Articulo</class>
         <class>logica.Libro</class>
     <properties>
-        <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
         <property name="hibernate.hbm2ddl.auto" value="create"/>
         <property name="hibernate.connection.username" value=""/>
         <property name="hibernate.connection.password" value=""/>
-        <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/gymbd"/>
-        <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+        <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:<port>/<name>"/>
+        <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
     </properties>
     </persistence-unit>
 </persistence>
