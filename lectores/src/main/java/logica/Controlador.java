@@ -1,9 +1,15 @@
 package logica;
 
+import java.util.ArrayList;
+import java.sql.Date;
 import datatypes.EstadoLector;
 import datatypes.Zona;
+import excepciones.CantidadDePaginasNoValidaException;
+import excepciones.DescripcionNoValidaException;
 import excepciones.ExisteUsuarioException;
 import excepciones.NoExisteUsuarioException;
+import excepciones.PesoNoValidoException;
+import excepciones.TituloNoValidoException;
 import excepciones.ValorIncorrectoDeEstadoException;
 import excepciones.ValorIncorrectoDeZonaException;
 import interfaces.IControlador;
@@ -98,5 +104,39 @@ public class Controlador implements IControlador{
         else{
             throw new NoExisteUsuarioException("No existe un lector con el email dado");
         }
+    }
+
+    public void agregarNuevoLibro(String titulo , int cantPaginas)throws CantidadDePaginasNoValidaException, TituloNoValidoException{
+        if(cantPaginas <= 0){
+            throw new CantidadDePaginasNoValidaException("La cantidad de paginas debe ser mayor a 0");
+        }
+        if(titulo == ""){
+            throw new TituloNoValidoException("El titulo del libro no puede ser vacio");
+        }
+        ManejadorMaterial MM = ManejadorMaterial.getInstancia();
+        Libro nuevoLibro = new Libro(titulo, cantPaginas);
+        MM.agregarMaterial(nuevoLibro);
+    }
+
+    public void agregarNuevoArticulo(String descripcion, float peso , String dimensiones)throws DescripcionNoValidaException, PesoNoValidoException{
+        if(descripcion == ""){
+            throw new DescripcionNoValidaException("La descripcion del articulo no puede ser vacia");
+        }
+        if(peso <= 0){
+            throw new PesoNoValidoException("El peso debe ser mayor que 0"); 
+        }
+        ManejadorMaterial MM = ManejadorMaterial.getInstancia();
+        Articulo nuevoArticulo = new Articulo(descripcion,peso,dimensiones);
+        MM.agregarMaterial(nuevoArticulo);
+    }
+
+    public ArrayList<DtMaterial> consultarDonacionesRegistradas(){
+        ManejadorMaterial MM = ManejadorMaterial.getInstancia();
+        return MM.obtenerMateriales();
+    }
+
+    public ArrayList<DtMaterial> consultarDonacionesRegistradasConFecha(Date fechaMenor, Date fechaMayor){
+        ManejadorMaterial MM = ManejadorMaterial.getInstancia();
+        return MM.obtenerMaterialesEntreFechas(fechaMenor , fechaMayor);
     }
 }
