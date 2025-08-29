@@ -12,14 +12,11 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
-import logica.ManejadorUsuario;
-import logica.Usuario;
 import interfaces.Fabrica;
 import interfaces.IControlador;
 
 public class MainWindow implements ActionListener {
 
-    private ManejadorUsuario em = ManejadorUsuario.getInstancia();
     private IControlador controlador = Fabrica.getInstancia().getIControlador();
 
     private JFrame window;
@@ -56,7 +53,6 @@ public class MainWindow implements ActionListener {
         initialize();
         run_bar();
         run_menu();
-        Usuario nuevo = em.buscarUsuario("dummymail@mail.com");
     }
 
     private void initialize(){
