@@ -14,10 +14,13 @@ import javax.swing.JPanel;
 
 import logica.ManejadorUsuario;
 import logica.Usuario;
+import interfaces.Fabrica;
+import interfaces.IControlador;
 
 public class MainWindow implements ActionListener {
 
     private ManejadorUsuario em = ManejadorUsuario.getInstancia();
+    private IControlador controlador = Fabrica.getInstancia().getIControlador();
 
     private JFrame window;
     private JPanel button_panel;
@@ -157,7 +160,7 @@ public class MainWindow implements ActionListener {
                     agregarBiblio.show();
                     break;
                 case "Agregar Lector": 
-                    AgregarLectorWindow agregarLect = new AgregarLectorWindow();
+                    AgregarLectorWindow agregarLect = new AgregarLectorWindow(controlador);
                     agregarLect.show();
                     break;
                 case "Agregar Libro":
