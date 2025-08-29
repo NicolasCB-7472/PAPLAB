@@ -1,218 +1,133 @@
 package presentacion;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import interfaces.IControlador;
+import excepciones.ExisteUsuarioException;
 
-public class AgregarBibliotecarioWindows implements ActionListener {
-    private JFrame window;
-    private JPanel mainPanel;
-    private JPanel formPanel;
-    private JPanel buttonPanel;
-
-    // Campos del formulario
-    private JTextField nombreField;
-    private JTextField emailField;
-    private JTextField numeroEmpleadoField;
+public class AgregarBibliotecarioWindows extends JFrame {
     
+    private static final long serialVersionUID = 1L;
+    
+    private IControlador icon;
+    
+    private JTextField textFieldNombre;
+    private JTextField textFieldEmail;
+    private JTextField textFieldNumeroEmpleado;
 
-    //Botones
-    private JButton agregarButton;
-    private JButton cancelarButton;
-    private JButton limpiarButton;
-
-    //Labels
-    private JLabel tituloLabel;
-    private JLabel nombreLabel;
-    private JLabel emailLabel;
-    private JLabel numeroEmpleadoLabel;
-
-public AgregarBibliotecarioWindows() {
-    initialize();
-    creaFormulario();
-    crearBotones();
-    setupLayout();
-    window.setVisible(true);
+public AgregarBibliotecarioWindows(IControlador icon) {
+    this.icon = icon;
+    setResizable(true);
+    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    setTitle("Alta de un Bibliotecario");
+    setBounds(100, 100, 450, 300);
+    getContentPane().setLayout(null);
+    
+    JLabel lblNombre = new JLabel("NOMBRE");
+    lblNombre.setBounds(47, 65, 70, 15);
+    getContentPane().add(lblNombre);
+    
+    JLabel lblEmail = new JLabel("EMAIL");
+    lblEmail.setBounds(47, 95, 70, 15);
+    getContentPane().add(lblEmail);
+    
+    JLabel lblNumeroEmpleado = new JLabel("NRO. EMPLEADO");
+    lblNumeroEmpleado.setBounds(47, 125, 100, 15);
+    getContentPane().add(lblNumeroEmpleado);
+    
+    textFieldNombre = new JTextField();
+    textFieldNombre.setBounds(135, 63, 114, 19);
+    getContentPane().add(textFieldNombre);
+    textFieldNombre.setColumns(10);
+    
+    textFieldEmail = new JTextField();
+    textFieldEmail.setBounds(135, 93, 114, 19);
+    getContentPane().add(textFieldEmail);
+    textFieldEmail.setColumns(10);
+    
+    textFieldNumeroEmpleado = new JTextField();
+    textFieldNumeroEmpleado.setBounds(135, 123, 114, 19);
+    getContentPane().add(textFieldNumeroEmpleado);
+    textFieldNumeroEmpleado.setColumns(10);
+    
+    JButton btnAceptar = new JButton("Aceptar");
+    btnAceptar.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            agregarBibliotecarioAceptarActionPerformed(e);
+        }
+    });
+    btnAceptar.setBounds(65, 200, 117, 25);
+    getContentPane().add(btnAceptar);
+    
+    JButton btnCancelar = new JButton("Cancelar");
+    btnCancelar.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            agregarBibliotecarioCancelarActionPerformed(e);
+        }
+    });
+    btnCancelar.setBounds(247, 200, 117, 25);
+    getContentPane().add(btnCancelar);
 }
 
-private void initialize() {
-    window = new JFrame("Agregar Nuevo Bibliotecario");
-    window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    window.setSize(500, 350);
-    window.setLocationRelativeTo(null);
-    window.setResizable(false);
-
-    mainPanel = new JPanel(new BorderLayout(15, 15));
-    formPanel = new JPanel(new GridBagLayout());
-    buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
-    
-    // Configurar márgenes
-    mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 25, 20, 25));
-    formPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+protected void agregarBibliotecarioCancelarActionPerformed(ActionEvent arg0) {
+    limpiarFormulario();
+    setVisible(false);
 }
 
-private void creaFormulario() {
-    //Titulo
-    tituloLabel = new JLabel("Registro de Nuevo Bibliotecario");
-    tituloLabel.setFont(new Font("Arial", Font.BOLD, 18));
-    tituloLabel.setHorizontalAlignment(SwingConstants.CENTER);
-    tituloLabel.setForeground(new Color(50, 50, 50));
-
-    //Campos del formulario
-    nombreLabel = new JLabel("Nombre:");
-    nombreField = new JTextField(12);
-    
-    emailLabel = new JLabel("Email:");
-    emailField = new JTextField(12);
-    
-    numeroEmpleadoLabel = new JLabel("Número de Empleado:");
-    numeroEmpleadoField = new JTextField(12);
-
-    //Agregar componentes al panel del formulario
-    GridBagConstraints gbc = new GridBagConstraints();
-    gbc.insets = new Insets(5, 5, 5, 5);
-    gbc.anchor = GridBagConstraints.WEST;
-    
-    // Nombre
-    gbc.gridx = 0; gbc.gridy = 0;
-    formPanel.add(nombreLabel, gbc);
-    gbc.gridx = 1;
-    formPanel.add(nombreField, gbc);
-    
-    // Email
-    gbc.gridx = 0; gbc.gridy = 1;
-    formPanel.add(emailLabel, gbc);
-    gbc.gridx = 1;
-    formPanel.add(emailField, gbc);
-    
-    // Número de Empleado
-    gbc.gridx = 0; gbc.gridy = 2;
-    formPanel.add(numeroEmpleadoLabel, gbc);
-    gbc.gridx = 1;
-    formPanel.add(numeroEmpleadoField, gbc);
-}
-
-private void crearBotones() {
-    agregarButton = new JButton("Registrar Bibliotecario");
-    agregarButton.setFont(new Font("Arial", Font.BOLD, 12));
-    agregarButton.setBackground(new Color(34, 139, 34));
-    agregarButton.setForeground(Color.WHITE);
-    agregarButton.setFocusPainted(false);
-    agregarButton.addActionListener(this);
-
-    cancelarButton = new JButton("Cancelar");
-    cancelarButton.setFont(new Font("Arial", Font.BOLD, 12));
-    cancelarButton.setBackground(new Color(220, 20, 60));
-    cancelarButton.setForeground(Color.WHITE);
-    cancelarButton.setFocusPainted(false);
-    cancelarButton.addActionListener(this);
-
-    limpiarButton = new JButton("Limpiar Campos");
-    limpiarButton.setFont(new Font("Arial", Font.BOLD, 12));
-    limpiarButton.setBackground(new Color(70, 130, 180));
-    limpiarButton.setForeground(Color.WHITE);
-    limpiarButton.setFocusPainted(false);
-    limpiarButton.addActionListener(this);
-
-    //Agregar botones al panel
-    buttonPanel.add(agregarButton);
-    buttonPanel.add(limpiarButton);
-    buttonPanel.add(cancelarButton);
-}
-
-private void setupLayout() {
-    mainPanel.add(tituloLabel, BorderLayout.NORTH);
-    mainPanel.add(formPanel, BorderLayout.CENTER);  
-    mainPanel.add(buttonPanel, BorderLayout.SOUTH);
-
-    window.add(mainPanel);
-}
-
-public void show() {
-    window.setVisible(true);
-}
-
-@Override
-public void actionPerformed(ActionEvent e) {
-    if (e.getSource() == agregarButton) {
-        agregarBibliotecario();
-    } else if (e.getSource() == limpiarButton) {
-        limpiarCampos();
-    } else if (e.getSource() == cancelarButton) {
-        window.dispose();
+protected void agregarBibliotecarioAceptarActionPerformed(ActionEvent arg0) {
+    if (checkFormulario()) {
+        try {
+            String nombre = this.textFieldNombre.getText();
+            String email = this.textFieldEmail.getText();
+            String numeroEmpleado = this.textFieldNumeroEmpleado.getText();
+            
+            // Registrar el bibliotecario
+            this.icon.registrarBibliotecario(nombre, email, numeroEmpleado);
+            
+            JOptionPane.showMessageDialog(this, "El Bibliotecario se ha creado con éxito", "Agregar Bibliotecario",
+                    JOptionPane.INFORMATION_MESSAGE);
+        } catch (ExisteUsuarioException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Agregar Bibliotecario", JOptionPane.ERROR_MESSAGE);
+        }
+        limpiarFormulario();
+        setVisible(false);
     }
 }
 
-private void limpiarCampos() {
-    nombreField.setText("");
-    emailField.setText("");
-    numeroEmpleadoField.setText("");
-    nombreField.requestFocus();
-}
-
-private void agregarBibliotecario() {
-    // Obtener datos del formulario
-    String nombre = nombreField.getText().trim();
-    String email = emailField.getText().trim();
-    String numeroEmpleado = numeroEmpleadoField.getText().trim();
+private boolean checkFormulario() {
+    String nombre = this.textFieldNombre.getText();
+    String email = this.textFieldEmail.getText();
+    String numeroEmpleado = this.textFieldNumeroEmpleado.getText();
     
-    // Validar campos obligatorios
     if (nombre.isEmpty() || email.isEmpty() || numeroEmpleado.isEmpty()) {
-        JOptionPane.showMessageDialog(window, 
-            "Por favor complete los campos obligatorios:\n" +
-            "• Nombre\n" +
-            "• Email\n" +
-            "• Número de Empleado", 
-            "Campos Requeridos", 
-            JOptionPane.WARNING_MESSAGE);
-        return;
+        JOptionPane.showMessageDialog(this, "No puede haber campos vacíos", "Agregar Bibliotecario",
+                JOptionPane.ERROR_MESSAGE);
+        return false;
     }
-    
-    // Validar formato de email
     if (!email.contains("@") || !email.contains(".")) {
-        JOptionPane.showMessageDialog(window, 
-            "Por favor ingrese un email válido", 
-            "Email Inválido", 
-            JOptionPane.ERROR_MESSAGE);
-        return;
+        JOptionPane.showMessageDialog(this, "El email debe tener un formato válido", "Agregar Bibliotecario",
+                JOptionPane.ERROR_MESSAGE);
+        return false;
     }
-    
-    // Validar número de empleado (debe ser numérico)
+    // Validar que el número de empleado sea numérico
     try {
         Integer.parseInt(numeroEmpleado);
-    } catch (NumberFormatException ex) {
-        JOptionPane.showMessageDialog(window, 
-            "El número de empleado debe ser numérico", 
-            "Número de Empleado Inválido", 
-            JOptionPane.ERROR_MESSAGE);
-        return;
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "El número de empleado debe ser numérico", "Agregar Bibliotecario",
+                JOptionPane.ERROR_MESSAGE);
+        return false;
     }
-    
-    try {
-        // Mostrar resumen de datos
-        StringBuilder resumen = new StringBuilder();
-        resumen.append("Bibliotecario registrado exitosamente:\n\n");
-        resumen.append("Nombre: ").append(nombre).append("\n");
-        resumen.append("Email: ").append(email).append("\n");
-        resumen.append("Número de Empleado: ").append(numeroEmpleado);
-        
-        JOptionPane.showMessageDialog(window, 
-            resumen.toString(), 
-            "Registro Exitoso", 
-            JOptionPane.INFORMATION_MESSAGE);
-        
-        // Limpiar campos
-        limpiarCampos();
-        
-        // Cerrar ventana
-        window.dispose();
-        
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(window, 
-            "Error al registrar el bibliotecario: " + ex.getMessage(), 
-            "Error", 
-            JOptionPane.ERROR_MESSAGE);
-    }
+    return true;
+}
+
+private void limpiarFormulario() {
+    textFieldNombre.setText("");
+    textFieldEmail.setText("");
+    textFieldNumeroEmpleado.setText("");
 }
 }
