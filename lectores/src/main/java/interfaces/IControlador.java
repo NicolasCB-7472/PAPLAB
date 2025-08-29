@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import datatypes.EstadoLector;
 import datatypes.Zona;
+import datatypes.DtMaterial;
 import excepciones.CantidadDePaginasNoValidaException;
 import excepciones.DescripcionNoValidaException;
 import excepciones.ExisteUsuarioException;
