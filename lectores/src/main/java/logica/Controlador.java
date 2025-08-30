@@ -114,7 +114,7 @@ public class Controlador implements IControlador{
             throw new TituloNoValidoException("El titulo del libro no puede ser vacio");
         }
         ManejadorMaterial MM = ManejadorMaterial.getInstancia();
-        Libro nuevoLibro = new Libro(titulo, cantPaginas);
+        Libro nuevoLibro = new Libro(getFechaActual(),titulo, cantPaginas); // Solucionar tema id.
         MM.agregarMaterial(nuevoLibro);
     }
 
@@ -126,17 +126,17 @@ public class Controlador implements IControlador{
             throw new PesoNoValidoException("El peso debe ser mayor que 0"); 
         }
         ManejadorMaterial MM = ManejadorMaterial.getInstancia();
-        Articulo nuevoArticulo = new Articulo(descripcion,peso,dimensiones);
+        Articulo nuevoArticulo = new Articulo(getFechaActual(),descripcion,peso,dimensiones);
         MM.agregarMaterial(nuevoArticulo);
     }
 
     public ArrayList<DtMaterial> consultarDonacionesRegistradas(){
         ManejadorMaterial MM = ManejadorMaterial.getInstancia();
-        return MM.obtenerMateriales();
+        return MM.obtenerDataMateriales();
     }
 
     public ArrayList<DtMaterial> consultarDonacionesRegistradasConFecha(Date fechaMenor, Date fechaMayor){
         ManejadorMaterial MM = ManejadorMaterial.getInstancia();
-        return MM.obtenerMaterialesEntreFechas(fechaMenor , fechaMayor);
+        return MM.obtenerDataMaterialesEntreFechas(fechaMenor , fechaMayor);
     }
 }
