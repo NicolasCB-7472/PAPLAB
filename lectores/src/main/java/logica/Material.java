@@ -1,10 +1,14 @@
 package logica;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Id;
+import jakarta.persistence.CascadeType;
 
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
@@ -13,6 +17,8 @@ public abstract class Material {
     private String id;
     private Date fechaIngreso;
     
+    @OneToMany(mappedBy="material_id",cascade=CascadeType.ALL,orphanRemoval=true)
+	private List<Prestamo> Prestamo = new ArrayList<>();
 
     // Constructores
     public Material(){
