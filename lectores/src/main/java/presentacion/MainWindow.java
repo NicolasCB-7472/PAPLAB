@@ -152,7 +152,7 @@ public class MainWindow implements ActionListener {
             // Aqui va donde se abren las ventanas
             switch(text){
                 case "Agregar Bibliotecario":
-                    AgregarBibliotecarioWindows agregarBiblio = new AgregarBibliotecarioWindows();
+                    AgregarBibliotecarioWindows agregarBiblio = new AgregarBibliotecarioWindows(controlador);
                     agregarBiblio.show();
                     break;
                 case "Agregar Lector": 
@@ -160,7 +160,7 @@ public class MainWindow implements ActionListener {
                     agregarLect.show();
                     break;
                 case "Agregar Libro":
-                    AgregarLibroWindow agregarLibro = new AgregarLibroWindow();
+                    AgregarLibroWindow agregarLibro = new AgregarLibroWindow(controlador);
                     agregarLibro.show();
                     break;
                 case "Agregar Articulo":

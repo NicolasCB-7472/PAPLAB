@@ -6,6 +6,7 @@
         <class>logica.Material</class>
         <class>logica.Articulo</class>
         <class>logica.Libro</class>
+        <class>logica.Prestamo</class>
     <properties>
         <property name="hibernate.hbm2ddl.auto" value="create"/>
         <property name="hibernate.connection.username" value=""/>
