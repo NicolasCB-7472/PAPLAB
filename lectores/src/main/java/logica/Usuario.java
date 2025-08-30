@@ -1,9 +1,14 @@
 package logica;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Id;
+import jakarta.persistence.CascadeType;
 
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
@@ -11,6 +16,9 @@ public abstract class Usuario {
     private String nombre;
     @Id
     private String email;
+
+    @OneToMany(mappedBy="usuario_mail",cascade=CascadeType.ALL,orphanRemoval=true)
+	private List<Prestamo> Prestamo = new ArrayList<>();
 
     // Constructores
     public Usuario(){
