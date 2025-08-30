@@ -1,4 +1,7 @@
 package logica;
+
+import datatypes.DtLector;
+import datatypes.DtUsuario;
 import datatypes.EstadoLector;
 import datatypes.Zona;
 import java.sql.Date;
@@ -56,5 +59,11 @@ public class Lector extends Usuario{
 
     public void setZona(Zona nueva_zona){
         this.zona=nueva_zona;
-    }    
+    } 
+
+    @Override 
+    public DtUsuario getDtUsuario(){
+        return new DtLector(this.getNombre(), this.getEmail(), this.getDireccion(), this.getFechaRegistro(),
+            this.getEstadoLector(), this.getZona());
+    }   
 }
