@@ -1,10 +1,11 @@
 package logica;
 import java.sql.Date;
 
+import datatypes.DtMaterial;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
-import jakarta.persistence.Id;
 
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
@@ -42,5 +43,7 @@ public abstract class Material {
     }//Deberia tener forma de modificar estos datos?
 
     //Operaciones
-    
+    public DtMaterial getData(){//No se puede instanciar DtMaterial ni Material, no se puede devolver un DtMaterial en este caso. A chequear la mejor forma de hacer esto.
+        return null;
+    }
 }
