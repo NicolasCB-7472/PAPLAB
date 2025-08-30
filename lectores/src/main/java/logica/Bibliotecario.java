@@ -3,6 +3,9 @@ package logica;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
+import datatypes.DtBibliotecario;
+import datatypes.DtUsuario;
+
 @Entity
 @DiscriminatorValue("B")
 public class Bibliotecario extends Usuario {
@@ -30,6 +33,11 @@ public class Bibliotecario extends Usuario {
 
     public void setNumeroEmpleado(String codigo){
         this.numeroEmpleado=codigo;
+    }
+
+    @Override 
+    public DtUsuario getDtUsuario(){
+        return new DtBibliotecario(this.getNombre(), this.getEmail(), this.getNumeroEmpleado());
     }
 
 }

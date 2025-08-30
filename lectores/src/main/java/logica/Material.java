@@ -10,6 +10,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Id;
 import jakarta.persistence.CascadeType;
 
+import datatypes.DtMaterial;
+
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 public abstract class Material {
@@ -45,8 +47,10 @@ public abstract class Material {
 
     public void setFechaIngreso(Date fechaIng){
         this.fechaIngreso = fechaIng;
-    }//Deberia tener forma de modificar estos datos?
+    }
 
     //Operaciones
+    public abstract DtMaterial getDtMaterial();
+
     
 }

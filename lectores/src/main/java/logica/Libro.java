@@ -2,6 +2,8 @@ package logica;
 
 import java.sql.Date;
 
+import datatypes.DtLibro;
+import datatypes.DtMaterial;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
@@ -39,5 +41,9 @@ public class Libro extends Material{
     }
 
     // Operaciones
+    @Override
+	public DtMaterial getDtMaterial() {
+		return new DtLibro(this.getId(), this.getFechaIngreso(), this.getTitulo(), this.getCantPaginas());
+	}
     
 }
