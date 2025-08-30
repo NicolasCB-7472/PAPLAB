@@ -63,11 +63,29 @@ public class ManejadorUsuario {
         }
         
         public boolean existeUsuario(String email){
-            return false;
+            Conexion conexion = Conexion.getInstancia();
+            EntityManager em = conexion.getEntityManager();
+
+            Usuario UsuarioABuscar= em.find(Usuario.class, email);
+            if(UsuarioABuscar != null){
+                return true;
+            }
+            else{
+                return false;
+            }
+
         }
         
         public Usuario darUsuario(String email){
-            return new Lector();
+            Conexion conexion = Conexion.getInstancia();
+            EntityManager em = conexion.getEntityManager();
+            Usuario UsuarioABuscar= em.find(Usuario.class, email);
+            if(UsuarioABuscar != null){
+                return UsuarioABuscar;
+            }
+            else{
+                return null;
+            }
         }
 
 }

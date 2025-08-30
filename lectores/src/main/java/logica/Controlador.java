@@ -90,6 +90,13 @@ public class Controlador implements IControlador{
             if(U instanceof Lector){
                 Lector L = (Lector) U;
                 L.setZona(nuevaZona);
+                
+                // Guardar el cambio en la base de datos
+                persistencia.Conexion conexion = persistencia.Conexion.getInstancia();
+                jakarta.persistence.EntityManager em = conexion.getEntityManager();
+                em.getTransaction().begin();
+                em.merge(L);
+                em.getTransaction().commit();
             }
             else{
                 throw new NoExisteUsuarioException("No existe un lector con el email dado");
@@ -99,4 +106,30 @@ public class Controlador implements IControlador{
             throw new NoExisteUsuarioException("No existe un lector con el email dado");
         }
     }
-}
+
+
+
+    //public void agregarNuevoLibro(String titulo , int cantPaginas)throws CantidadDePaginasNoValidaException, TituloNoValidoException{
+        //if(cantPaginas <= 0){
+            //throw new CantidadDePaginasNoValidaException("La cantidad de paginas debe ser mayor a 0");
+        //}
+        //if(titulo == ""){
+            //throw new TituloNoValidoException("El titulo del libro no puede ser vacio");
+       // }
+       // ManejadorMaterial MM = ManejadorMaterial.getInstancia();
+        //Libro nuevoLibro = new Libro(getFechaActual(),titulo, cantPaginas); // Solucionar tema id.
+        //MM.agregarMaterial(nuevoLibro);
+    //}
+
+
+
+
+
+
+
+ };
+
+
+
+
+
