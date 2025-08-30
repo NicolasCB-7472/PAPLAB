@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import interfaces.Fabrica;
@@ -32,6 +33,7 @@ public class MainWindow implements ActionListener {
 
     private JMenuItem agregar_bibliotecario;
     private JMenuItem agregar_lector;
+    private JMenuItem modificar_lector;
 
     // Para el menu
     private JButton Usuario_button;
@@ -77,6 +79,7 @@ public class MainWindow implements ActionListener {
         // Usuario
         agregar_bibliotecario = new JMenuItem("Agregar Bibliotecario");
         agregar_lector = new JMenuItem("Agregar Lector");
+        modificar_lector = new JMenuItem("Modificar Lector");
 
         // Materiales
         agregar_libro = new JMenuItem("Agregar Libro");
@@ -92,6 +95,7 @@ public class MainWindow implements ActionListener {
         // Se agrega a la barra
         GestionUsuario.add(agregar_bibliotecario);
         GestionUsuario.add(agregar_lector);
+        GestionUsuario.add(modificar_lector);
 
         GestionMateriales.add(agregar_libro);
         GestionMateriales.add(agregar_articulo);
@@ -111,6 +115,7 @@ public class MainWindow implements ActionListener {
         // Event listeners para lanzar la ventana
         agregar_bibliotecario.addActionListener(this);
         agregar_lector.addActionListener(this);
+        modificar_lector.addActionListener(this);
         agregar_libro.addActionListener(this);
         agregar_articulo.addActionListener(this);
         agregar_prestamo.addActionListener(this);
@@ -159,13 +164,17 @@ public class MainWindow implements ActionListener {
                     AgregarLectorWindow agregarLect = new AgregarLectorWindow(controlador);
                     agregarLect.show();
                     break;
+                case "Modificar Lector":
+                    ModificarLectorWindow modificarLector = new ModificarLectorWindow(controlador);
+                    modificarLector.setVisible(true);
+                    break;
                 case "Agregar Libro":
                     AgregarLibroWindow agregarLibro = new AgregarLibroWindow(controlador);
                     agregarLibro.show();
                     break;
                 case "Agregar Articulo":
-                    AgregarArticuloWindow agregarArticulo = new AgregarArticuloWindow();
-                    agregarArticulo.show();
+                    AgregarArticuloWindow agregarArticulo = new AgregarArticuloWindow(controlador);
+                    agregarArticulo.setVisible(true);
                     break;
             }
         }
