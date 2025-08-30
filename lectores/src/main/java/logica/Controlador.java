@@ -1,7 +1,9 @@
 package logica;
 
-import java.util.ArrayList;
 import java.sql.Date;
+import java.util.ArrayList;
+
+import datatypes.DtMaterial;
 import datatypes.EstadoLector;
 import datatypes.Zona;
 import excepciones.CantidadDePaginasNoValidaException;
@@ -13,7 +15,6 @@ import excepciones.TituloNoValidoException;
 import excepciones.ValorIncorrectoDeEstadoException;
 import excepciones.ValorIncorrectoDeZonaException;
 import interfaces.IControlador;
-import java.sql.Date;
 
 public class Controlador implements IControlador{
     private static Controlador instancia = null;
@@ -138,5 +139,9 @@ public class Controlador implements IControlador{
     public ArrayList<DtMaterial> consultarDonacionesRegistradasConFecha(Date fechaMenor, Date fechaMayor){
         ManejadorMaterial MM = ManejadorMaterial.getInstancia();
         return MM.obtenerDataMaterialesEntreFechas(fechaMenor , fechaMayor);
+    }
+
+    public Date getFechaActual(){
+        return new java.sql.Date(System.currentTimeMillis());
     }
 }
