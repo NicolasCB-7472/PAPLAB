@@ -1,11 +1,12 @@
 package logica;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import datatypes.DtMaterial;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import persistencia.Conexion;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ManejadorMaterial {
     private static ManejadorMaterial instancia = null;
@@ -63,5 +64,51 @@ public class ManejadorMaterial {
         return ret_list;
     }
 
+    public ArrayList<DtMaterial> obtenerDataMateriales(){
+        Conexion conexion = Conexion.getInstancia();
+        EntityManager em = conexion.getEntityManager();
 
+        Query query = em.createQuery("select m from Material m");
+        
+        List<?> rawList = query.getResultList();
+        List<Material> listMaterial = new ArrayList<>();
+        
+        for(Object obj : rawList){
+            if(obj instanceof Material){
+                listMaterial.add((Material) obj);
+            }
+        }
+        
+        ArrayList<DtMaterial> ret_list = new ArrayList<>();
+        for(Material m: listMaterial){
+            // Agregar new, lanza un problema de resolucion de tipo a Integer.valueOf()
+            ret_list.add(m.getData());
+        }
+
+        return ret_list;
+    }
+
+    public ArrayList<DtMaterial> obtenerDataMaterialesEntreFechas(Date menor, Date Mayor){
+        Conexion conexion = Conexion.getInstancia();
+        EntityManager em = conexion.getEntityManager();
+
+        Query query = em.createQuery("select m from Material m");
+        
+        List<?> rawList = query.getResultList();
+        List<Material> listMaterial = new ArrayList<>();
+        
+        for(Object obj : rawList){
+            if(obj instanceof Material){
+                listMaterial.add((Material) obj);
+            }
+        }
+        
+        ArrayList<DtMaterial> ret_list = new ArrayList<>();
+        for(Material m: listMaterial){
+            // Agregar new, lanza un problema de resolucion de tipo a Integer.valueOf()
+            ret_list.add(m.getData());
+        }
+
+        return ret_list;
+    }
 }
