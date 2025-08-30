@@ -2,7 +2,7 @@ package logica;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.sql.Date;
 import datatypes.DtMaterial;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
