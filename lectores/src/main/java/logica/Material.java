@@ -43,7 +43,5 @@ public abstract class Material {
     }//Deberia tener forma de modificar estos datos?
 
     //Operaciones
-    public DtMaterial getData(){//No se puede instanciar DtMaterial ni Material, no se puede devolver un DtMaterial en este caso. A chequear la mejor forma de hacer esto.
-        return null;
-    }
+    
 }

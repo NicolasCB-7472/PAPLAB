@@ -49,8 +49,5 @@ public class Articulo extends Material{
     }
 
     // Operaciones
-    public DtMaterial getData(){
-        DtMaterial data = new DtArticulo(this.getId(), this.getFechaIngreso(), this.getPeso(), this.getDescripcion(), this.getDimensiones());
-        return data;
-    }
+    
 }
