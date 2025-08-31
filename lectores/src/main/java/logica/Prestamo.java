@@ -16,14 +16,25 @@ public class Prestamo{
     @Id
     @ManyToOne
     @JoinColumn(
+        name="lector_mail",
         insertable=false,
         updatable=false
     )
-    private Usuario usuario_mail;
+    private Lector lector_mail;
 
     @Id
     @ManyToOne
     @JoinColumn(
+        name="bibliotecario_mail",
+        insertable=false,
+        updatable=false
+    )
+    private Bibliotecario bibliotecario_mail;
+
+    @Id
+    @ManyToOne
+    @JoinColumn(
+        name="material_id",
         insertable=false,
         updatable=false
     )
@@ -40,9 +51,10 @@ public class Prestamo{
 
     }
 
-      public Prestamo(Usuario user, Material mat, Date fechaSolicitud, Date fechaDevolucion, EstadoPrestamo estado) {
+      public Prestamo(Lector lector, Bibliotecario bibliotecario, Material mat, Date fechaSolicitud, Date fechaDevolucion, EstadoPrestamo estado) {
         super();
-        this.usuario_mail=user;
+        this.lector_mail=lector;
+        this.bibliotecario_mail=bibliotecario;
         this.material_id=mat;
         this.fechaSolicitud = fechaSolicitud; // el bebe
         this.fechaDevolucion = fechaDevolucion;
@@ -62,8 +74,12 @@ public class Prestamo{
         return this.estado;
     }
 
-    public Usuario getUsuario(){
-        return this.usuario_mail;
+    public Lector getLector(){
+        return this.lector_mail;
+    }
+
+    public Bibliotecario getBibliotecario(){
+        return this.bibliotecario_mail;
     }
 
     public Material getMaterial(){
@@ -86,8 +102,12 @@ public class Prestamo{
         this.estado= estadoActual;
     }
 
-     public void setUsuario(Usuario user){
-        this.usuario_mail=user;
+    public void setLector(Lector lector){
+        this.lector_mail=lector;
+    }
+
+    public void setBibliotecario(Bibliotecario bibliotecario){
+        this.bibliotecario_mail=bibliotecario;
     }
 
     public void setMaterial(Material mat){
