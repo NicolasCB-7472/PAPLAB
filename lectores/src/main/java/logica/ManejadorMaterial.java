@@ -1,11 +1,13 @@
 package logica;
 
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+
+import datatypes.DtMaterial;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import persistencia.Conexion;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ManejadorMaterial {
     private static ManejadorMaterial instancia = null;
@@ -63,5 +65,52 @@ public class ManejadorMaterial {
         return ret_list;
     }
 
+    public ArrayList<DtMaterial> obtenerDataMateriales(){
+        Conexion conexion = Conexion.getInstancia();
+        EntityManager em = conexion.getEntityManager();
 
+        Query query = em.createQuery("select m from Material m");
+        
+        List<?> rawList = query.getResultList();
+        List<Material> listMaterial = new ArrayList<>();
+        
+        for(Object obj : rawList){
+            if(obj instanceof Material){
+                listMaterial.add((Material) obj);
+            }
+        }
+        
+        ArrayList<DtMaterial> ret_list = new ArrayList<>();
+        for(Material m: listMaterial){
+            ret_list.add(m.getData());
+        }
+
+        return ret_list;
+    }
+
+    public ArrayList<DtMaterial> obtenerDataMaterialesEntreFechas(Date menor, Date mayor){
+        Conexion conexion = Conexion.getInstancia();
+        EntityManager em = conexion.getEntityManager();
+
+        Query query = em.createQuery("select m from Material m where m.fechaIngreso >= :menor and m.fecha <= :mayor"); //Compara directamente en la query.
+        query.setParameter("menor", menor);//Antes de obtener la query setea que son :menor y :mayor
+        query.setParameter("mayor", mayor);
+        List<?> rawList = query.getResultList();
+        List<Material> listMaterial = new ArrayList<>();
+        
+
+        for(Object obj : rawList){
+            if(obj instanceof Material){
+                Material mat = (Material) obj;
+                    listMaterial.add(mat);
+            }
+        }
+        
+        ArrayList<DtMaterial> ret_list = new ArrayList<>();
+        for(Material m: listMaterial){
+            ret_list.add(m.getDtMaterial());
+        }
+
+        return ret_list;
+    }
 }

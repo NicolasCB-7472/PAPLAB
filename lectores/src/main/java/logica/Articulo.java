@@ -2,8 +2,10 @@ package logica;
 
 import java.sql.Date;
 
-import datatypes.DtMaterial;
+
 import datatypes.DtArticulo;
+import datatypes.DtMaterial;
+
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
@@ -49,10 +51,12 @@ public class Articulo extends Material{
     }
 
     // Operaciones
+
     @Override
 	public DtMaterial getDtMaterial() {
 		return new DtArticulo(this.getId(), this.getFechaIngreso(), this.getPeso(), this.getDescripcion() ,this.getDimensiones());
 	}
+
 
     
 }
