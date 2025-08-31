@@ -43,6 +43,15 @@ public class Bibliotecario extends Usuario {
         this.numeroEmpleado=codigo;
     }
 
+    // Set/Get Prestamo (Sin implementacion de borrar prestamo)
+    public List<Prestamo> getPrestamos(){
+        return this.Prestamo;
+    }
+
+    public void setPrestamos(List<Prestamo> prestamo_list){
+        this.Prestamo=prestamo_list;
+    }
+
     @Override 
     public DtUsuario getDtUsuario(){
         return new DtBibliotecario(this.getNombre(), this.getEmail(), this.getNumeroEmpleado());

@@ -65,6 +65,14 @@ public class Lector extends Usuario{
 
     public void setZona(Zona nueva_zona){
         this.zona=nueva_zona;
+    }
+
+    public List<Prestamo> getPrestamos(){
+        return this.Prestamo;
+    }
+
+    public void setPrestamos(List<Prestamo> prestamo_list){
+        this.Prestamo=prestamo_list;
     } 
 
     @Override 
