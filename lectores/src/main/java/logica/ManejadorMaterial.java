@@ -1,8 +1,9 @@
 package logica;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.Date;
+
 import datatypes.DtMaterial;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
@@ -81,32 +82,33 @@ public class ManejadorMaterial {
         
         ArrayList<DtMaterial> ret_list = new ArrayList<>();
         for(Material m: listMaterial){
-            // Agregar new, lanza un problema de resolucion de tipo a Integer.valueOf()
             ret_list.add(m.getData());
         }
 
         return ret_list;
     }
 
-    public ArrayList<DtMaterial> obtenerDataMaterialesEntreFechas(Date menor, Date Mayor){
+    public ArrayList<DtMaterial> obtenerDataMaterialesEntreFechas(Date menor, Date mayor){
         Conexion conexion = Conexion.getInstancia();
         EntityManager em = conexion.getEntityManager();
 
-        Query query = em.createQuery("select m from Material m");
-        
+        Query query = em.createQuery("select m from Material m where m.fechaIngreso >= :menor and m.fecha <= :mayor"); //Compara directamente en la query.
+        query.setParameter("menor", menor);//Antes de obtener la query setea que son :menor y :mayor
+        query.setParameter("mayor", mayor);
         List<?> rawList = query.getResultList();
         List<Material> listMaterial = new ArrayList<>();
         
+
         for(Object obj : rawList){
             if(obj instanceof Material){
-                listMaterial.add((Material) obj);
+                Material mat = (Material) obj;
+                    listMaterial.add(mat);
             }
         }
         
         ArrayList<DtMaterial> ret_list = new ArrayList<>();
         for(Material m: listMaterial){
-            // Agregar new, lanza un problema de resolucion de tipo a Integer.valueOf()
-            ret_list.add(m.getData());
+            ret_list.add(m.getDtMaterial());
         }
 
         return ret_list;

@@ -107,7 +107,7 @@ public class Controlador implements IControlador{
         }
     }
 
-    public void agregarNuevoLibro(String titulo , int cantPaginas)throws CantidadDePaginasNoValidaException, TituloNoValidoException{
+    public void agregarNuevoLibro(String id,String titulo , int cantPaginas)throws CantidadDePaginasNoValidaException, TituloNoValidoException{
         if(cantPaginas <= 0){
             throw new CantidadDePaginasNoValidaException("La cantidad de paginas debe ser mayor a 0");
         }
@@ -115,11 +115,11 @@ public class Controlador implements IControlador{
             throw new TituloNoValidoException("El titulo del libro no puede ser vacio");
         }
         ManejadorMaterial MM = ManejadorMaterial.getInstancia();
-        Libro nuevoLibro = new Libro(getFechaActual(),titulo, cantPaginas); // Solucionar tema id.
+        Libro nuevoLibro = new Libro(id,getFechaActual(),titulo, cantPaginas); // Solucionar tema id.
         MM.agregarMaterial(nuevoLibro);
     }
 
-    public void agregarNuevoArticulo(String descripcion, float peso , String dimensiones)throws DescripcionNoValidaException, PesoNoValidoException{
+    public void agregarNuevoArticulo(String id,String descripcion, float peso , String dimensiones)throws DescripcionNoValidaException, PesoNoValidoException{
         if(descripcion == ""){
             throw new DescripcionNoValidaException("La descripcion del articulo no puede ser vacia");
         }
@@ -127,7 +127,7 @@ public class Controlador implements IControlador{
             throw new PesoNoValidoException("El peso debe ser mayor que 0"); 
         }
         ManejadorMaterial MM = ManejadorMaterial.getInstancia();
-        Articulo nuevoArticulo = new Articulo(getFechaActual(),descripcion,peso,dimensiones);
+        Articulo nuevoArticulo = new Articulo(id,getFechaActual(),peso,descripcion,dimensiones);
         MM.agregarMaterial(nuevoArticulo);
     }
 
