@@ -5,6 +5,9 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Id;
 
+
+import datatypes.DtUsuario;
+
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 public abstract class Usuario {
@@ -41,6 +44,7 @@ public abstract class Usuario {
     }
 
     // Operaciones
+    public abstract DtUsuario getDtUsuario();
     
 }
 

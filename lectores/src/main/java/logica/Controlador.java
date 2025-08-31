@@ -97,6 +97,13 @@ public class Controlador implements IControlador{
             if(U instanceof Lector){
                 Lector L = (Lector) U;
                 L.setZona(nuevaZona);
+                
+                // Guardar el cambio en la base de datos
+                persistencia.Conexion conexion = persistencia.Conexion.getInstancia();
+                jakarta.persistence.EntityManager em = conexion.getEntityManager();
+                em.getTransaction().begin();
+                em.merge(L);
+                em.getTransaction().commit();
             }
             else{
                 throw new NoExisteUsuarioException("No existe un lector con el email dado");
@@ -106,6 +113,7 @@ public class Controlador implements IControlador{
             throw new NoExisteUsuarioException("No existe un lector con el email dado");
         }
     }
+
 
     public void agregarNuevoLibro(String id,String titulo , int cantPaginas)throws CantidadDePaginasNoValidaException, TituloNoValidoException{
         if(cantPaginas <= 0){
@@ -144,4 +152,11 @@ public class Controlador implements IControlador{
     public Date getFechaActual(){
         return new java.sql.Date(System.currentTimeMillis());
     }
-}
+
+};
+
+
+
+
+
+

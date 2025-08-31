@@ -1,2 +1,5 @@
 /target
 /.vscode
+/src/main/java/META-INF/persistence.xml
+
+

@@ -1,11 +1,18 @@
 package logica;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import datatypes.DtMaterial;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Id;
+import jakarta.persistence.CascadeType;
+import datatypes.DtMaterial;
+
 
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
@@ -14,6 +21,8 @@ public abstract class Material {
     private String id;
     private Date fechaIngreso;
     
+    @OneToMany(mappedBy="material_id",cascade=CascadeType.ALL,orphanRemoval=true)
+	private List<Prestamo> Prestamo = new ArrayList<>();
 
     // Constructores
     public Material(){
@@ -40,8 +49,10 @@ public abstract class Material {
 
     public void setFechaIngreso(Date fechaIng){
         this.fechaIngreso = fechaIng;
-    }//Deberia tener forma de modificar estos datos?
+    }
 
     //Operaciones
+    public abstract DtMaterial getDtMaterial();
+
     
 }

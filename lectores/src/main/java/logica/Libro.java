@@ -40,5 +40,9 @@ public class Libro extends Material{
     }
 
     // Operaciones
+    @Override
+	public DtMaterial getDtMaterial() {
+		return new DtLibro(this.getId(), this.getFechaIngreso(), this.getTitulo(), this.getCantPaginas());
+	}
     
 }

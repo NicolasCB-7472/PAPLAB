@@ -1,10 +1,17 @@
 package logica;
+
+import datatypes.DtLector;
+import datatypes.DtUsuario;
 import datatypes.EstadoLector;
 import datatypes.Zona;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 
 @Entity
 @DiscriminatorValue("L")
@@ -12,8 +19,10 @@ public class Lector extends Usuario{
     private String direccion;
     private Date FechaRegistro;
     private EstadoLector estado = EstadoLector.ACTIVO;
-
     private Zona zona;
+
+    @OneToMany(mappedBy="lector_mail",cascade=CascadeType.ALL,orphanRemoval=true)
+	private List<Prestamo> Prestamo = new ArrayList<>();
 
     //Constructores
     public Lector(){
@@ -56,5 +65,11 @@ public class Lector extends Usuario{
 
     public void setZona(Zona nueva_zona){
         this.zona=nueva_zona;
-    }    
+    } 
+
+    @Override 
+    public DtUsuario getDtUsuario(){
+        return new DtLector(this.getNombre(), this.getEmail(), this.getDireccion(), this.getFechaRegistro(),
+            this.getEstadoLector(), this.getZona());
+    }   
 }
