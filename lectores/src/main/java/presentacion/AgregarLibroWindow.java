@@ -21,7 +21,7 @@ public class AgregarLibroWindow extends JFrame {
     private JTextField textFieldId;
     private JTextField textFieldTitulo;
     private JTextField textFieldCantPaginas;
-    private JTextField textFieldFechaIngreso;
+
 
     public AgregarLibroWindow(IControlador icon) {
         this.icon = icon;
@@ -43,9 +43,7 @@ public class AgregarLibroWindow extends JFrame {
         lblCantPaginas.setBounds(47, 95, 100, 15);
         getContentPane().add(lblCantPaginas);
         
-        JLabel lblFechaIngreso = new JLabel("FECHA INGRESO");
-        lblFechaIngreso.setBounds(47, 125, 100, 15);
-        getContentPane().add(lblFechaIngreso);
+
         
         textFieldId = new JTextField();
         textFieldId.setBounds(135, 33, 114, 19);
@@ -62,10 +60,7 @@ public class AgregarLibroWindow extends JFrame {
         getContentPane().add(textFieldCantPaginas);
         textFieldCantPaginas.setColumns(10);
         
-        textFieldFechaIngreso = new JTextField();
-        textFieldFechaIngreso.setBounds(135, 123, 114, 19);
-        getContentPane().add(textFieldFechaIngreso);
-        textFieldFechaIngreso.setColumns(10);
+
         
         JButton btnAceptar = new JButton("Aceptar");
         btnAceptar.addActionListener(new ActionListener() {
@@ -97,16 +92,12 @@ public class AgregarLibroWindow extends JFrame {
                 String id = this.textFieldId.getText();
                 String titulo = this.textFieldTitulo.getText();
                 String cantPaginasStr = this.textFieldCantPaginas.getText();
-                String fechaIngresoStr = this.textFieldFechaIngreso.getText();
                 
                 // Convertir cantPaginas a int
                 int cantPaginas = Integer.parseInt(cantPaginasStr);
                 
-                // Convertir fechaIngreso a Date (formato: yyyy-MM-dd)
-                Date fechaIngreso = Date.valueOf(fechaIngresoStr);
-                
                 // Registrar el libro
-                // this.icon.registrarLibro(id, fechaIngreso, titulo, cantPaginas);
+                this.icon.agregarNuevoLibro(id, titulo, cantPaginas);
                 
                 JOptionPane.showMessageDialog(this, "El Libro se ha creado con éxito", "Agregar Libro",
                         JOptionPane.INFORMATION_MESSAGE);
@@ -123,9 +114,8 @@ public class AgregarLibroWindow extends JFrame {
         String id = this.textFieldId.getText();
         String titulo = this.textFieldTitulo.getText();
         String cantPaginas = this.textFieldCantPaginas.getText();
-        String fechaIngreso = this.textFieldFechaIngreso.getText();
         
-        if (id.isEmpty() || titulo.isEmpty() || cantPaginas.isEmpty() || fechaIngreso.isEmpty()) {
+        if (id.isEmpty() || titulo.isEmpty() || cantPaginas.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios", "Agregar Libro",
                     JOptionPane.ERROR_MESSAGE);
             return false;
@@ -140,14 +130,7 @@ public class AgregarLibroWindow extends JFrame {
             return false;
         }
         
-        // Validar formato de fecha (yyyy-MM-dd)
-        try {
-            Date.valueOf(fechaIngreso);
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(this, "La fecha debe tener formato yyyy-MM-dd", "Agregar Libro",
-                    JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
+
         
         return true;
     }
@@ -156,6 +139,5 @@ public class AgregarLibroWindow extends JFrame {
         textFieldId.setText("");
         textFieldTitulo.setText("");
         textFieldCantPaginas.setText("");
-        textFieldFechaIngreso.setText("");
     }
 }       
