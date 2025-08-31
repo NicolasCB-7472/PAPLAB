@@ -27,9 +27,9 @@ public interface IControlador{
 
     ////
     //2)
-    public void agregarNuevoLibro(String id, String titulo , int cantPaginas)throws CantidadDePaginasNoValidaException, TituloNoValidoException;
+    public void agregarNuevoLibro(String id, String titulo, int cantPaginas)throws CantidadDePaginasNoValidaException, TituloNoValidoException;
 
-    public void agregarNuevoArticulo(String id, String descripcion, float peso , String dimensiones )throws DescripcionNoValidaException, PesoNoValidoException;
+    public void agregarNuevoArticulo(String id, String descripcion, float peso, String dimensiones)throws DescripcionNoValidaException, PesoNoValidoException;
 
     public ArrayList<DtMaterial> consultarDonacionesRegistradas();
 
