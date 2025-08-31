@@ -1,5 +1,6 @@
 package logica;
 
+import datatypes.EstadoPrestamo;
 import datatypes.EstadoLector;
 import datatypes.Zona;
 import excepciones.ExisteUsuarioException;
@@ -7,7 +8,13 @@ import excepciones.NoExisteUsuarioException;
 import excepciones.ValorIncorrectoDeEstadoException;
 import excepciones.ValorIncorrectoDeZonaException;
 import interfaces.IControlador;
+import jakarta.persistence.EntityManager;
+import persistencia.Conexion;
+
 import java.sql.Date;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Controlador implements IControlador{
     private static Controlador instancia = null;
@@ -104,6 +111,47 @@ public class Controlador implements IControlador{
         }
         else{
             throw new NoExisteUsuarioException("No existe un lector con el email dado");
+        }
+    }
+
+    public void agregarPrestamo(Lector lec, Bibliotecario bib, Material mat, Date fecha_sol,  Date fecha_dev, EstadoPrestamo estado){
+        ManejadorUsuario MU = ManejadorUsuario.getInstancia();
+        ManejadorMaterial MM = ManejadorMaterial.getInstancia();
+        
+        Usuario l = MU.buscarUsuario(lec.getEmail());
+        Usuario b = MU.buscarUsuario(bib.getEmail());
+        Material m = MM.buscarMaterial(mat);
+        
+        if(l != null && b != null && m != null){
+            if(fecha_sol.compareTo(fecha_dev) < 0){
+                //Fecha de solicitud antes que la fecha de devolucion. Entonces
+                if((l instanceof Lector) && (b instanceof Bibliotecario) && (m instanceof Material)){   
+                    Prestamo p = new Prestamo((Lector) l,(Bibliotecario) b,(Material) m, fecha_sol, fecha_dev, EstadoPrestamo.EN_CURSO);
+                                 
+                    List<Prestamo> lec_prestamos = ((Lector) l).getPrestamos();
+                    lec_prestamos.add(p);
+                    ((Lector) l).setPrestamos(lec_prestamos);
+
+                    List<Prestamo> bib_prestamos = ((Bibliotecario) b).getPrestamos();
+                    bib_prestamos.add(p);
+                    ((Bibliotecario) b).setPrestamos(bib_prestamos);
+                    
+                    List<Prestamo> mat_prestamos = ((Material) m).getPrestamos();
+                    mat_prestamos.add(p);
+                    ((Material) m).setPrestamos(mat_prestamos);
+
+                    Conexion conexion = Conexion.getInstancia();
+		            EntityManager em = conexion.getEntityManager(); 
+                    em.getTransaction().begin();
+		            //Nota, l, b y m tienen que ser managed por el em. (Que es el mismo en MU y MM, por Conexion.java)
+                    em.persist(p);
+		            em.getTransaction().commit();
+                }
+            }else{
+                //Excepcion fechas incorrectas
+            }
+        }else{
+            //Excepcion no existe alguien
         }
     }
 
