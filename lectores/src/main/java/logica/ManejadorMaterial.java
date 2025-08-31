@@ -82,7 +82,7 @@ public class ManejadorMaterial {
         
         ArrayList<DtMaterial> ret_list = new ArrayList<>();
         for(Material m: listMaterial){
-            ret_list.add(m.getData());
+            ret_list.add(m.getDtMaterial());
         }
 
         return ret_list;

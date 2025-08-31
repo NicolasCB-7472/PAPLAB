@@ -1,11 +1,11 @@
 package logica;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import persistencia.Conexion;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ManejadorUsuario {
         private static ManejadorUsuario instancia = null;
@@ -86,6 +86,15 @@ public class ManejadorUsuario {
             else{
                 return null;
             }
+        }
+
+        public void confirmarCambiosUsuario(Usuario U){
+            // Guardar el cambio en la base de datos
+            persistencia.Conexion conexion = persistencia.Conexion.getInstancia();
+            jakarta.persistence.EntityManager em = conexion.getEntityManager();
+            em.getTransaction().begin();
+            em.merge(U);
+            em.getTransaction().commit();
         }
 
 }
