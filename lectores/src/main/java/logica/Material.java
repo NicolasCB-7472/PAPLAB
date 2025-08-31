@@ -51,6 +51,15 @@ public abstract class Material {
         this.fechaIngreso = fechaIng;
     }
 
+    public List<Prestamo> getPrestamos(){
+        return this.Prestamo;
+    }
+
+    public void setPrestamo(List<Prestamo> prestamo_list){
+        this.Prestamo=prestamo_list;
+    } 
+
+
     //Operaciones
     public abstract DtMaterial getDtMaterial();
 
