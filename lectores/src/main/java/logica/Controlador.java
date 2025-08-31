@@ -97,13 +97,7 @@ public class Controlador implements IControlador{
             if(U instanceof Lector){
                 Lector L = (Lector) U;
                 L.setZona(nuevaZona);
-                
-                // Guardar el cambio en la base de datos
-                persistencia.Conexion conexion = persistencia.Conexion.getInstancia();
-                jakarta.persistence.EntityManager em = conexion.getEntityManager();
-                em.getTransaction().begin();
-                em.merge(L);
-                em.getTransaction().commit();
+                MU.confirmarCambiosUsuario(L);
             }
             else{
                 throw new NoExisteUsuarioException("No existe un lector con el email dado");
