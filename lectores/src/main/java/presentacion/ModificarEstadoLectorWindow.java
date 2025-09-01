@@ -42,7 +42,7 @@ public class ModificarEstadoLectorWindow extends JFrame {
         getContentPane().add(textFieldEmail);
         textFieldEmail.setColumns(10);
         
-        String[] estados = {"", "HABILITADO", "SUSPENDIDO", "SANCIONADO"};
+        String[] estados = {"", "ACTIVO", "SUSPENDIDO"};
         comboBoxEstado = new JComboBox<>(estados);
         comboBoxEstado.setBounds(135, 63, 200, 19);
         getContentPane().add(comboBoxEstado);
