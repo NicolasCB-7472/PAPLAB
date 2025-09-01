@@ -70,6 +70,7 @@ public class Controlador implements IControlador{
                 if(U instanceof Lector){
                     Lector L = (Lector) U;
                     L.setEstado(nuevoEstado);
+                    MU.confirmarCambiosUsuario(L);
                 }
                 else{
                     throw new NoExisteUsuarioException("No existe un lector con el email dado");
