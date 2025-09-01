@@ -52,6 +52,10 @@ public class Bibliotecario extends Usuario {
         this.Prestamo=prestamo_list;
     }
 
+    public void agregarPrestamo(Prestamo p){
+        this.Prestamo.add(p);
+    }
+
     @Override 
     public DtUsuario getDtUsuario(){
         return new DtBibliotecario(this.getNombre(), this.getEmail(), this.getNumeroEmpleado());

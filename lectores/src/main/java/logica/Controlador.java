@@ -114,38 +114,35 @@ public class Controlador implements IControlador{
         }
     }
 
-    public void agregarPrestamo(Lector lec, Bibliotecario bib, Material mat, Date fecha_sol,  Date fecha_dev, EstadoPrestamo estado){
+    public void agregarPrestamo(String lec_mail, String bib_mail, String numEmpleado, Integer mat_id, Date fecha_sol,  Date fecha_dev, EstadoPrestamo estado){
         ManejadorUsuario MU = ManejadorUsuario.getInstancia();
         ManejadorMaterial MM = ManejadorMaterial.getInstancia();
         
-        Usuario l = MU.buscarUsuario(lec.getEmail());
-        Usuario b = MU.buscarUsuario(bib.getEmail());
-        Material m = MM.buscarMaterial(mat);
+        Usuario l = MU.buscarUsuario(lec_mail);
+        Usuario b = MU.buscarUsuario(bib_mail);
+        Material m = MM.buscarMaterial_PorID(mat_id);
         
         if(l != null && b != null && m != null){
             if(fecha_sol.compareTo(fecha_dev) < 0){
-                //Fecha de solicitud antes que la fecha de devolucion. Entonces
-                if((l instanceof Lector) && (b instanceof Bibliotecario) && (m instanceof Material)){   
-                    Prestamo p = new Prestamo((Lector) l,(Bibliotecario) b,(Material) m, fecha_sol, fecha_dev, EstadoPrestamo.EN_CURSO);
-                                 
-                    List<Prestamo> lec_prestamos = ((Lector) l).getPrestamos();
-                    lec_prestamos.add(p);
-                    ((Lector) l).setPrestamos(lec_prestamos);
+                //Fecha de solicitud antes que la fecha de devolucion y bibliotecario es empleado. Entonces
+                if((l instanceof Lector) && (b instanceof Bibliotecario) && (m instanceof Material) 
+                    && ((Bibliotecario) b).getNumeroEmpleado().equals(numEmpleado)){   
+                        Prestamo p = new Prestamo((Lector) l,(Bibliotecario) b,(Material) m, fecha_sol, fecha_dev, EstadoPrestamo.EN_CURSO);
+                                    
+                        ((Lector) l).agregarPrestamo(p);
 
-                    List<Prestamo> bib_prestamos = ((Bibliotecario) b).getPrestamos();
-                    bib_prestamos.add(p);
-                    ((Bibliotecario) b).setPrestamos(bib_prestamos);
-                    
-                    List<Prestamo> mat_prestamos = ((Material) m).getPrestamos();
-                    mat_prestamos.add(p);
-                    ((Material) m).setPrestamos(mat_prestamos);
+                        ((Bibliotecario) b).agregarPrestamo(p);
+                        
+                        ((Material) m).agregarPrestamo(p);
 
-                    Conexion conexion = Conexion.getInstancia();
-		            EntityManager em = conexion.getEntityManager(); 
-                    em.getTransaction().begin();
-		            //Nota, l, b y m tienen que ser managed por el em. (Que es el mismo en MU y MM, por Conexion.java)
-                    em.persist(p);
-		            em.getTransaction().commit();
+                        Conexion conexion = Conexion.getInstancia();
+                        EntityManager em = conexion.getEntityManager(); 
+                        em.getTransaction().begin();
+                        //Nota, l, b y m tienen que ser managed por el em. (Que es el mismo en MU y MM, por Conexion.java)
+                        em.persist(p);
+                        em.getTransaction().commit();
+                }else{
+                    //Excepcion casteo incorrecto, o empleado no valido
                 }
             }else{
                 //Excepcion fechas incorrectas

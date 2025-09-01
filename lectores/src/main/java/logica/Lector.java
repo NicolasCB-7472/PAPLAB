@@ -75,6 +75,10 @@ public class Lector extends Usuario{
         this.Prestamo=prestamo_list;
     } 
 
+    public void agregarPrestamo(Prestamo p){
+        this.Prestamo.add(p);
+    }
+
     @Override 
     public DtUsuario getDtUsuario(){
         return new DtLector(this.getNombre(), this.getEmail(), this.getDireccion(), this.getFechaRegistro(),

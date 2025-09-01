@@ -57,6 +57,10 @@ public abstract class Material {
         this.Prestamo=prestamo_list;
     } 
 
+    public void agregarPrestamo(Prestamo p){
+        this.Prestamo.add(p);
+    }
+
 
     //Operaciones
     public abstract DtMaterial getDtMaterial();
