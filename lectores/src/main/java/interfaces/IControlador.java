@@ -3,19 +3,24 @@ package interfaces;
 import java.util.ArrayList;
 
 import datatypes.EstadoLector;
+import datatypes.EstadoPrestamo;
 import datatypes.Zona;
 import datatypes.DtMaterial;
 import excepciones.CantidadDePaginasNoValidaException;
 import excepciones.DescripcionNoValidaException;
+import excepciones.EmpleadoyCasteoNoValidoException;
 import excepciones.ExisteUsuarioException;
+import excepciones.FechasIncorrectasException;
 import excepciones.NoExisteUsuarioException;
 import excepciones.PesoNoValidoException;
+import excepciones.PrestamoIncorrectoException;
 import excepciones.TituloNoValidoException;
 import excepciones.ValorIncorrectoDeEstadoException;
 import excepciones.ValorIncorrectoDeZonaException;
 import java.sql.Date;
 
 public interface IControlador{
+    /// Usuarios
     //1)
     public void registrarLector(String nombre, String email, String direccion, Zona zona, Date fecha)throws ExisteUsuarioException;
 
@@ -25,7 +30,7 @@ public interface IControlador{
 
     public void cambiarZonaLector(String email , Zona nuevaZona)throws NoExisteUsuarioException, ValorIncorrectoDeZonaException;
 
-    ////
+    //// Materiales
     //2)
     public void agregarNuevoLibro(String id, String titulo, int cantPaginas)throws CantidadDePaginasNoValidaException, TituloNoValidoException;
 
@@ -34,4 +39,9 @@ public interface IControlador{
     public ArrayList<DtMaterial> consultarDonacionesRegistradas();
 
     public ArrayList<DtMaterial> consultarDonacionesRegistradasConFecha(Date fechaMenor, Date fechaMayor);
+
+    /// Prestamos
+    //3)
+    public void agregarPrestamo(String lec_mail, String bib_mail, String numEmpleado, Integer mat_id, Date fecha_sol,  Date fecha_dev, EstadoPrestamo estado)
+        throws EmpleadoyCasteoNoValidoException, FechasIncorrectasException, PrestamoIncorrectoException;
 }

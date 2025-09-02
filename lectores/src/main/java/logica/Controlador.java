@@ -8,22 +8,11 @@ import datatypes.DtMaterial;
 import datatypes.EstadoLector;
 import datatypes.EstadoPrestamo;
 import datatypes.Zona;
-import excepciones.CantidadDePaginasNoValidaException;
-import excepciones.DescripcionNoValidaException;
-import excepciones.ExisteUsuarioException;
-import excepciones.NoExisteUsuarioException;
-import excepciones.PesoNoValidoException;
-import excepciones.TituloNoValidoException;
-import excepciones.ValorIncorrectoDeEstadoException;
-import excepciones.ValorIncorrectoDeZonaException;
+import excepciones.*;
 import interfaces.IControlador;
 
 import jakarta.persistence.EntityManager;
 import persistencia.Conexion;
-
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Controlador implements IControlador{
     private static Controlador instancia = null;
@@ -147,12 +136,15 @@ public class Controlador implements IControlador{
                         em.getTransaction().commit();
                 }else{
                     //Excepcion casteo incorrecto, o empleado no valido
+                    //throw new EmpleadoyCasteoNoValidoException("Empleado no valido, o casteo incorrecto");
                 }
             }else{
                 //Excepcion fechas incorrectas
+                //throw new FechasIncorrectasException("La fecha de solicitud es antes que la fecha de devolucion");
             }
         }else{
             //Excepcion no existe alguien
+            //throw new PrestamoIncorrectoException("Lector, biblitoecario, o material no se encuentran");
         }
     }
 
