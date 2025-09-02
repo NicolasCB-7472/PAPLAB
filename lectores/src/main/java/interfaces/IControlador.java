@@ -6,17 +6,7 @@ import datatypes.EstadoLector;
 import datatypes.EstadoPrestamo;
 import datatypes.Zona;
 import datatypes.DtMaterial;
-import excepciones.CantidadDePaginasNoValidaException;
-import excepciones.DescripcionNoValidaException;
-import excepciones.EmpleadoyCasteoNoValidoException;
-import excepciones.ExisteUsuarioException;
-import excepciones.FechasIncorrectasException;
-import excepciones.NoExisteUsuarioException;
-import excepciones.PesoNoValidoException;
-import excepciones.PrestamoIncorrectoException;
-import excepciones.TituloNoValidoException;
-import excepciones.ValorIncorrectoDeEstadoException;
-import excepciones.ValorIncorrectoDeZonaException;
+import excepciones.*;
 import java.sql.Date;
 
 public interface IControlador{
