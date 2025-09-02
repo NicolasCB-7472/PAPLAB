@@ -3,14 +3,16 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import datatypes.DtMaterial;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Id;
 import jakarta.persistence.CascadeType;
-
 import datatypes.DtMaterial;
+
 
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)

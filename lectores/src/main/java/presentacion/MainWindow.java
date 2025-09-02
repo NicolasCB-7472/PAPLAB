@@ -40,6 +40,7 @@ public class MainWindow implements ActionListener {
     private JButton Material_button;
     private JMenuItem agregar_libro;
     private JMenuItem agregar_articulo;
+    private JMenuItem donaciones_registradas;
     private JMenuItem agregar_prestamo;
     private JMenuItem modificar_prestamo;
     private JMenuItem historial_prestamo;
@@ -81,9 +82,10 @@ public class MainWindow implements ActionListener {
         agregar_lector = new JMenuItem("Agregar Lector");
         modificar_lector = new JMenuItem("Modificar Lector");
 
-        // Materiales
-        agregar_libro = new JMenuItem("Agregar Libro");
-        agregar_articulo = new JMenuItem("Agregar Articulo");
+            // Materiales
+    agregar_libro = new JMenuItem("Agregar Libro");
+    agregar_articulo = new JMenuItem("Agregar Articulo");
+    donaciones_registradas = new JMenuItem("Donaciones Registradas");
 
         // Prestamos
         agregar_prestamo = new JMenuItem("Agregar Prestamo");
@@ -99,6 +101,7 @@ public class MainWindow implements ActionListener {
 
         GestionMateriales.add(agregar_libro);
         GestionMateriales.add(agregar_articulo);
+        GestionMateriales.add(donaciones_registradas);
 
         GestionPrestamos.add(agregar_prestamo);
         GestionPrestamos.add(modificar_prestamo);
@@ -118,6 +121,7 @@ public class MainWindow implements ActionListener {
         modificar_lector.addActionListener(this);
         agregar_libro.addActionListener(this);
         agregar_articulo.addActionListener(this);
+        donaciones_registradas.addActionListener(this);
         agregar_prestamo.addActionListener(this);
         modificar_prestamo.addActionListener(this);
         historial_prestamo.addActionListener(this);
@@ -176,8 +180,14 @@ public class MainWindow implements ActionListener {
                     AgregarArticuloWindow agregarArticulo = new AgregarArticuloWindow(controlador);
                     agregarArticulo.setVisible(true);
                     break;
+                case "Donaciones Registradas":
+                    DonacionesRegistradasWindow donacionesWindow = new DonacionesRegistradasWindow(controlador);
+                    donacionesWindow.show();
+                    break;
             }
         }
     }
+    
+
 
 }

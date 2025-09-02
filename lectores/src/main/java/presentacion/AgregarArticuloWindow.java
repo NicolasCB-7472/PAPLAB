@@ -20,7 +20,7 @@ public class AgregarArticuloWindow extends JFrame {
     private JTextField textFieldPeso;
     private JTextField textFieldDescripcion;
     private JTextField textFieldDimensiones;
-    private JTextField textFieldFechaIngreso;
+
 
     public AgregarArticuloWindow(IControlador icon) {
         this.icon = icon;
@@ -46,9 +46,7 @@ public class AgregarArticuloWindow extends JFrame {
         lblDimensiones.setBounds(47, 125, 100, 15);
         getContentPane().add(lblDimensiones);
         
-        JLabel lblFechaIngreso = new JLabel("FECHA INGRESO");
-        lblFechaIngreso.setBounds(47, 155, 100, 15);
-        getContentPane().add(lblFechaIngreso);
+
         
         textFieldId = new JTextField();
         textFieldId.setBounds(135, 33, 114, 19);
@@ -70,10 +68,7 @@ public class AgregarArticuloWindow extends JFrame {
         getContentPane().add(textFieldDimensiones);
         textFieldDimensiones.setColumns(10);
         
-        textFieldFechaIngreso = new JTextField();
-        textFieldFechaIngreso.setBounds(135, 153, 114, 19);
-        getContentPane().add(textFieldFechaIngreso);
-        textFieldFechaIngreso.setColumns(10);
+
         
         JButton btnAceptar = new JButton("Aceptar");
         btnAceptar.addActionListener(new ActionListener() {
@@ -106,16 +101,11 @@ public class AgregarArticuloWindow extends JFrame {
                 String pesoStr = this.textFieldPeso.getText();
                 String descripcion = this.textFieldDescripcion.getText();
                 String dimensiones = this.textFieldDimensiones.getText();
-                String fechaIngresoStr = this.textFieldFechaIngreso.getText();
-                
                 // Convertir peso a float
                 float peso = Float.parseFloat(pesoStr);
-                
-                // Convertir fechaIngreso a Date (formato: yyyy-MM-dd)
-                Date fechaIngreso = Date.valueOf(fechaIngresoStr);
-                
+                    
                 // Registrar el artículo
-                //this.icon.agregarNuevoArticulo(id, fechaIngreso, peso, descripcion, dimensiones);
+                this.icon.agregarNuevoArticulo(id, descripcion, peso, dimensiones);
                 
                 JOptionPane.showMessageDialog(this, "El Artículo se ha creado con éxito", "Agregar Artículo",
                         JOptionPane.INFORMATION_MESSAGE);
@@ -133,9 +123,8 @@ public class AgregarArticuloWindow extends JFrame {
         String peso = this.textFieldPeso.getText();
         String descripcion = this.textFieldDescripcion.getText();
         String dimensiones = this.textFieldDimensiones.getText();
-        String fechaIngreso = this.textFieldFechaIngreso.getText();
         
-        if (id.isEmpty() || peso.isEmpty() || descripcion.isEmpty() || dimensiones.isEmpty() || fechaIngreso.isEmpty()) {
+        if (id.isEmpty() || peso.isEmpty() || descripcion.isEmpty() || dimensiones.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios", "Agregar Artículo",
                     JOptionPane.ERROR_MESSAGE);
             return false;
@@ -155,14 +144,7 @@ public class AgregarArticuloWindow extends JFrame {
             return false;
         }
         
-        // Validar formato de fecha (yyyy-MM-dd)
-        try {
-            Date.valueOf(fechaIngreso);
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(this, "La fecha debe tener formato yyyy-MM-dd", "Agregar Artículo",
-                    JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
+
         
         return true;
     }
@@ -172,6 +154,5 @@ public class AgregarArticuloWindow extends JFrame {
         textFieldPeso.setText("");
         textFieldDescripcion.setText("");
         textFieldDimensiones.setText("");
-        textFieldFechaIngreso.setText("");
     }
 }

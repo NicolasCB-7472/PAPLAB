@@ -1,7 +1,6 @@
 package logica;
 
 import java.sql.Date;
-
 import datatypes.DtLibro;
 import datatypes.DtMaterial;
 import jakarta.persistence.DiscriminatorValue;
