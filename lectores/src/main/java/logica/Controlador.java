@@ -1,10 +1,12 @@
 package logica;
 
+
+
 import java.sql.Date;
 import java.util.ArrayList;
-
 import datatypes.DtMaterial;
 import datatypes.EstadoLector;
+import datatypes.EstadoPrestamo;
 import datatypes.Zona;
 import excepciones.CantidadDePaginasNoValidaException;
 import excepciones.DescripcionNoValidaException;
@@ -15,6 +17,13 @@ import excepciones.TituloNoValidoException;
 import excepciones.ValorIncorrectoDeEstadoException;
 import excepciones.ValorIncorrectoDeZonaException;
 import interfaces.IControlador;
+
+import jakarta.persistence.EntityManager;
+import persistencia.Conexion;
+
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Controlador implements IControlador{
     private static Controlador instancia = null;
@@ -106,6 +115,44 @@ public class Controlador implements IControlador{
         }
         else{
             throw new NoExisteUsuarioException("No existe un lector con el email dado");
+        }
+    }
+
+    public void agregarPrestamo(String lec_mail, String bib_mail, String numEmpleado, Integer mat_id, Date fecha_sol,  Date fecha_dev, EstadoPrestamo estado){
+        ManejadorUsuario MU = ManejadorUsuario.getInstancia();
+        ManejadorMaterial MM = ManejadorMaterial.getInstancia();
+        
+        Usuario l = MU.buscarUsuario(lec_mail);
+        Usuario b = MU.buscarUsuario(bib_mail);
+        Material m = MM.buscarMaterial_PorID(mat_id);
+        
+        if(l != null && b != null && m != null){
+            if(fecha_sol.compareTo(fecha_dev) < 0){
+                //Fecha de solicitud antes que la fecha de devolucion y bibliotecario es empleado. Entonces
+                if((l instanceof Lector) && (b instanceof Bibliotecario) && (m instanceof Material) 
+                    && ((Bibliotecario) b).getNumeroEmpleado().equals(numEmpleado)){   
+                        Prestamo p = new Prestamo((Lector) l,(Bibliotecario) b,(Material) m, fecha_sol, fecha_dev, EstadoPrestamo.EN_CURSO);
+                                    
+                        ((Lector) l).agregarPrestamo(p);
+
+                        ((Bibliotecario) b).agregarPrestamo(p);
+                        
+                        ((Material) m).agregarPrestamo(p);
+
+                        Conexion conexion = Conexion.getInstancia();
+                        EntityManager em = conexion.getEntityManager(); 
+                        em.getTransaction().begin();
+                        //Nota, l, b y m tienen que ser managed por el em. (Que es el mismo en MU y MM, por Conexion.java)
+                        em.persist(p);
+                        em.getTransaction().commit();
+                }else{
+                    //Excepcion casteo incorrecto, o empleado no valido
+                }
+            }else{
+                //Excepcion fechas incorrectas
+            }
+        }else{
+            //Excepcion no existe alguien
         }
     }
 

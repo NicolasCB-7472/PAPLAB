@@ -55,9 +55,13 @@ public abstract class Material {
         return this.Prestamo;
     }
 
-    public void setPrestamo(List<Prestamo> prestamo_list){
+    public void setPrestamos(List<Prestamo> prestamo_list){
         this.Prestamo=prestamo_list;
     } 
+
+    public void agregarPrestamo(Prestamo p){
+        this.Prestamo.add(p);
+    }
 
 
     //Operaciones

@@ -41,6 +41,15 @@ public class ManejadorMaterial {
         return mats;
     }
 
+    public Material buscarMaterial_PorID(Integer id){
+        Conexion conexion = Conexion.getInstancia();
+        EntityManager em = conexion.getEntityManager();
+
+        Material mats = em.find(Material.class, id);
+
+        return mats;
+    }
+
     public ArrayList<Integer> obtenerMateriales(){
         Conexion conexion = Conexion.getInstancia();
         EntityManager em = conexion.getEntityManager();
