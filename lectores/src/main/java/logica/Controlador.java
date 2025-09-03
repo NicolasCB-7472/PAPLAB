@@ -198,6 +198,18 @@ public class Controlador implements IControlador{
         ManejadorUsuario MU = ManejadorUsuario.getInstancia();
         return MU.obtenerLectores();
     }
+
+    public ArrayList<String> obtenerMailBibliotecarios(){
+        ManejadorUsuario MU = ManejadorUsuario.getInstancia();
+        return MU.obtenerBibliotecarios();
+    }
+
+    public ArrayList<Integer> obtenerIdMateriales(){
+        ManejadorMaterial MM = ManejadorMaterial.getInstancia();
+        return MM.obtenerMateriales();
+    }
+
+
 };
 
 

@@ -45,5 +45,10 @@ public interface IControlador{
     public void agregarPrestamo(String lec_mail, String bib_mail, String numEmpleado, Integer mat_id, Date fecha_sol,  Date fecha_dev, EstadoPrestamo estado)
         throws EmpleadoyCasteoNoValidoException, FechasIncorrectasException, PrestamoIncorrectoException;
 
+    /// Extras
     public ArrayList<String> obtenerMailLectores();
+    
+    public ArrayList<String> obtenerMailBibliotecarios();
+
+    public ArrayList<Integer> obtenerIdMateriales();
 }

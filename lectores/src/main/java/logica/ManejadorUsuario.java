@@ -96,7 +96,7 @@ public class ManejadorUsuario {
             em.merge(U);
             em.getTransaction().commit();
         }
-        
+
         public ArrayList<String> obtenerLectores(){
             Conexion conexion = Conexion.getInstancia();
             EntityManager em = conexion.getEntityManager();
@@ -117,6 +117,25 @@ public class ManejadorUsuario {
             }
             return ret_list;
         }
+        public ArrayList<String> obtenerBibliotecarios(){
+            Conexion conexion = Conexion.getInstancia();
+            EntityManager em = conexion.getEntityManager();
 
+            Query query = em.createQuery("select u from Bibliotecario u");
+
+            List<?> rawList = query.getResultList();
+            List<Bibliotecario> listUsuario = new ArrayList<>();
+            
+            for(Object obj : rawList){
+                if(obj instanceof Bibliotecario){
+                    listUsuario.add((Bibliotecario) obj);
+                }
+            }
+            ArrayList<String> ret_list = new ArrayList<>();
+            for(Bibliotecario u: listUsuario) {
+                ret_list.add(new String(u.getEmail()));
+            }
+            return ret_list;
+        }
 }
 
