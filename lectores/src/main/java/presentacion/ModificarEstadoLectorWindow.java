@@ -1,24 +1,25 @@
 package presentacion;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import interfaces.IControlador;
+
+import datatypes.EstadoLector;
 import excepciones.NoExisteUsuarioException;
 import excepciones.ValorIncorrectoDeEstadoException;
-import datatypes.EstadoLector;
+import interfaces.IControlador;
 
 public class ModificarEstadoLectorWindow extends JFrame {
     private static final long serialVersionUID = 1L;
 
     private IControlador icon;
 
-    private JTextField textFieldEmail;
+    private FilterComboBox comboMail;
     private JComboBox<String> comboBoxEstado;
 
     public ModificarEstadoLectorWindow(IControlador icon) {
@@ -36,11 +37,10 @@ public class ModificarEstadoLectorWindow extends JFrame {
         JLabel lblEstado = new JLabel("NUEVO ESTADO");
         lblEstado.setBounds(47, 65, 100, 15);
         getContentPane().add(lblEstado);
-        
-        textFieldEmail = new JTextField();
-        textFieldEmail.setBounds(135, 33, 200, 19);
-        getContentPane().add(textFieldEmail);
-        textFieldEmail.setColumns(10);
+
+        comboMail = new FilterComboBox(icon.obtenerMailLectores());
+        comboMail.setBounds(135, 33, 200, 19);
+        getContentPane().add(comboMail);
         
         String[] estados = {"", "ACTIVO", "SUSPENDIDO"};
         comboBoxEstado = new JComboBox<>(estados);
@@ -74,7 +74,7 @@ public class ModificarEstadoLectorWindow extends JFrame {
     protected void modificarEstadoAceptarActionPerformed(ActionEvent arg0) {
         if (checkFormulario()) {
             try {
-                String email = this.textFieldEmail.getText();
+                String email = (String) this.comboMail.getSelectedItem();
                 String estadoStr = (String) this.comboBoxEstado.getSelectedItem();
                 
                 // Convertir String a EstadoLector enum
@@ -99,7 +99,7 @@ public class ModificarEstadoLectorWindow extends JFrame {
     }
     
     private boolean checkFormulario() {
-        String email = this.textFieldEmail.getText();
+        String email = (String) this.comboMail.getSelectedItem();
         String estado = (String) this.comboBoxEstado.getSelectedItem();
         
         if (email.isEmpty() || estado.isEmpty()) {
@@ -118,7 +118,7 @@ public class ModificarEstadoLectorWindow extends JFrame {
     }
     
     private void limpiarFormulario() {
-        textFieldEmail.setText("");
+        comboMail.setSelectedItem(-1);
         comboBoxEstado.setSelectedIndex(0);
     }
 }
