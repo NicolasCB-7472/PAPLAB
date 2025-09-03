@@ -29,7 +29,6 @@ import excepciones.FechasIncorrectasException;
 import excepciones.PrestamoIncorrectoException;
 import interfaces.IControlador;
 
-
 public class AgregarPrestamoWindow extends JFrame {
     
     private static final long serialVersionUID = 1L;
@@ -39,9 +38,9 @@ public class AgregarPrestamoWindow extends JFrame {
     
     // Componentes de la interfaz
     private FilterComboBox comboBoxLector;
-    private JComboBox<String> comboBoxBibliotecario;
+    private FilterComboBox comboBoxBibliotecario;
     private JTextField textFieldNumEmpleado;
-    private JComboBox<Integer> comboBoxMaterial;
+    private FilterComboBox comboBoxMaterial;
     private JSpinner spinnerFechaSolicitud;
     private JSpinner spinnerFechaDevolucion;
     private JComboBox<EstadoPrestamo> comboBoxEstado;
@@ -96,7 +95,7 @@ public class AgregarPrestamoWindow extends JFrame {
         gbc.gridy = 2;
         mainPanel.add(new JLabel("Bibliotecario:"), gbc);
         
-        comboBoxBibliotecario = new JComboBox<>();
+        comboBoxBibliotecario = new FilterComboBox(controlador.obtenerMailBibliotecarios());
         gbc.gridx = 1;
         mainPanel.add(comboBoxBibliotecario, gbc);
         
@@ -113,8 +112,12 @@ public class AgregarPrestamoWindow extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 4;
         mainPanel.add(new JLabel("Material:"), gbc);
-        
-        comboBoxMaterial = new JComboBox<>();
+        ArrayList<Integer> listaId = controlador.obtenerIdMateriales();
+        ArrayList<String> listaStringId = new ArrayList<>();
+        for(Integer I : listaId){
+            listaStringId.add(I.toString());
+        }
+        comboBoxMaterial = new FilterComboBox(listaStringId);
         gbc.gridx = 1;
         mainPanel.add(comboBoxMaterial, gbc);
         
@@ -230,7 +233,7 @@ public class AgregarPrestamoWindow extends JFrame {
             String lectorEmail = (String) comboBoxLector.getSelectedItem();
             String bibliotecarioEmail = (String) comboBoxBibliotecario.getSelectedItem();
             String numEmpleado = textFieldNumEmpleado.getText().trim();
-            Integer materialId = (Integer) comboBoxMaterial.getSelectedItem();
+            Integer materialId =  Integer.parseInt((String) comboBoxMaterial.getSelectedItem());
             Date fechaSolicitud = new Date(((java.util.Date) spinnerFechaSolicitud.getValue()).getTime());
             Date fechaDevolucion = new Date(((java.util.Date) spinnerFechaDevolucion.getValue()).getTime());
             EstadoPrestamo estado = (EstadoPrestamo) comboBoxEstado.getSelectedItem();
