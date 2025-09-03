@@ -7,6 +7,7 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import interfaces.IControlador;
 import excepciones.NoExisteUsuarioException;
@@ -18,7 +19,7 @@ public class CambiarZonaLectorWindow extends JFrame {
 
     private IControlador icon;
 
-    private JTextField textFieldEmail;
+    private FilterComboBox comboMail;
     private JComboBox<String> comboBoxZona;
 
     public CambiarZonaLectorWindow(IControlador icon) {
@@ -36,11 +37,11 @@ public class CambiarZonaLectorWindow extends JFrame {
         JLabel lblZona = new JLabel("NUEVA ZONA");
         lblZona.setBounds(47, 65, 100, 15);
         getContentPane().add(lblZona);
+        ArrayList<String> mails = icon.obtenerMailLectores();
+        comboMail = new FilterComboBox(mails);
+        comboMail.setBounds(135, 33, 200, 19);
+        getContentPane().add(comboMail);
         
-        textFieldEmail = new JTextField();
-        textFieldEmail.setBounds(135, 33, 200, 19);
-        getContentPane().add(textFieldEmail);
-        textFieldEmail.setColumns(10);
         
         String[] zonas = {"", "BIBLIOTECA_CENTRAL", "SUCURSAL_ESTE", "SUCURSAL_OESTE", "BIBLIOTECA_INFANTIL", "ARCHIVO_GENERAL"};
         comboBoxZona = new JComboBox<>(zonas);
@@ -74,7 +75,7 @@ public class CambiarZonaLectorWindow extends JFrame {
     protected void cambiarZonaAceptarActionPerformed(ActionEvent arg0) {
         if (checkFormulario()) {
             try {
-                String email = this.textFieldEmail.getText();
+                String email = (String) this.comboMail.getSelectedItem();
                 String zonaStr = (String) this.comboBoxZona.getSelectedItem();
                 
                 // Convertir String a Zona enum
@@ -99,7 +100,7 @@ public class CambiarZonaLectorWindow extends JFrame {
     }
     
     private boolean checkFormulario() {
-        String email = this.textFieldEmail.getText();
+        String email = (String) this.comboMail.getSelectedItem();
         String zona = (String) this.comboBoxZona.getSelectedItem();
         
         if (email.isEmpty() || zona.isEmpty()) {
@@ -118,7 +119,7 @@ public class CambiarZonaLectorWindow extends JFrame {
     }
     
     private void limpiarFormulario() {
-        textFieldEmail.setText("");
+        comboMail.setSelectedItem(accessibleContext);
         comboBoxZona.setSelectedIndex(0);
     }
 }
