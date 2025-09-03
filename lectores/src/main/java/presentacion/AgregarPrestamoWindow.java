@@ -144,7 +144,7 @@ public class AgregarPrestamoWindow extends JFrame {
         JPanel buttonPanel = new JPanel(new FlowLayout());
         buttonAceptar = new JButton("Aceptar");
         buttonCancelar = new JButton("Cancelar");
-        buttonRecargar = new JButton("🔄 Recargar");
+        buttonRecargar = new JButton("Recargar");
         buttonPanel.add(buttonAceptar);
         buttonPanel.add(buttonCancelar);
         buttonPanel.add(buttonRecargar);
@@ -161,11 +161,11 @@ public class AgregarPrestamoWindow extends JFrame {
             comboBoxBibliotecario.removeAllItems();
             comboBoxMaterial.removeAllItems();
             
-            System.out.println("🔄 Cargando datos...");
+            System.out.println("Cargando datos...");
             
             // Cargar lectores
             ArrayList<String> usuarios = manejadorUsuario.obtenerUsuarios();
-            System.out.println("📧 Total usuarios encontrados: " + usuarios.size());
+            System.out.println("Total usuarios encontrados: " + usuarios.size());
             
             int lectoresCount = 0;
             int bibliotecariosCount = 0;
@@ -175,19 +175,19 @@ public class AgregarPrestamoWindow extends JFrame {
                 if (usuario instanceof Lector) {
                     comboBoxLector.addItem(email);
                     lectoresCount++;
-                    System.out.println("👤 Lector agregado: " + email);
+                    System.out.println("Lector agregado: " + email);
                 } else if (usuario instanceof Bibliotecario) {
                     comboBoxBibliotecario.addItem(email);
                     bibliotecariosCount++;
-                    System.out.println("👨‍💼 Bibliotecario agregado: " + email);
+                    System.out.println("Bibliotecario agregado: " + email);
                 }
             }
             
-            System.out.println("📊 Resumen: " + lectoresCount + " lectores, " + bibliotecariosCount + " bibliotecarios");
+            System.out.println("Resumen: " + lectoresCount + " lectores, " + bibliotecariosCount + " bibliotecarios");
             
             // Cargar materiales
             ArrayList<Integer> materiales = manejadorMaterial.obtenerMateriales();
-            System.out.println("📚 Materiales encontrados: " + materiales.size());
+            System.out.println("Materiales encontrados: " + materiales.size());
             for (Integer id : materiales) {
                 comboBoxMaterial.addItem(id);
                 System.out.println("📖 Material agregado: ID " + id);
@@ -205,19 +205,19 @@ public class AgregarPrestamoWindow extends JFrame {
             
             // Verificar que se cargaron datos
             if (comboBoxLector.getItemCount() == 0) {
-                System.out.println("⚠️ ADVERTENCIA: No se cargaron lectores");
+                System.out.println("ADVERTENCIA: No se cargaron lectores");
             }
             if (comboBoxBibliotecario.getItemCount() == 0) {
-                System.out.println("⚠️ ADVERTENCIA: No se cargaron bibliotecarios");
+                System.out.println("ADVERTENCIA: No se cargaron bibliotecarios");
             }
             if (comboBoxMaterial.getItemCount() == 0) {
-                System.out.println("⚠️ ADVERTENCIA: No se cargaron materiales");
+                System.out.println("ADVERTENCIA: No se cargaron materiales");
             }
             
-            System.out.println("✅ Carga de datos completada");
+            System.out.println("Carga de datos completada");
             
         } catch (Exception e) {
-            System.err.println("❌ Error al cargar datos: " + e.getMessage());
+            System.err.println("Error al cargar datos: " + e.getMessage());
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, 
                 "Error al cargar datos: " + e.getMessage(), 
@@ -244,7 +244,7 @@ public class AgregarPrestamoWindow extends JFrame {
         buttonRecargar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("🔄 Recargando datos manualmente...");
+                System.out.println("Recargando datos manualmente...");
                 loadData();
                 JOptionPane.showMessageDialog(AgregarPrestamoWindow.this, 
                     "Datos recargados. Lectores: " + comboBoxLector.getItemCount() + 
