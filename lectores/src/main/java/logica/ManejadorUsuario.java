@@ -96,6 +96,27 @@ public class ManejadorUsuario {
             em.merge(U);
             em.getTransaction().commit();
         }
+        
+        public ArrayList<String> obtenerLectores(){
+            Conexion conexion = Conexion.getInstancia();
+            EntityManager em = conexion.getEntityManager();
+
+            Query query = em.createQuery("select u from Lector u");
+
+            List<?> rawList = query.getResultList();
+            List<Lector> listUsuario = new ArrayList<>();
+            
+            for(Object obj : rawList){
+                if(obj instanceof Lector){
+                    listUsuario.add((Lector) obj);
+                }
+            }
+            ArrayList<String> ret_list = new ArrayList<>();
+            for(Lector u: listUsuario) {
+                ret_list.add(new String(u.getEmail()));
+            }
+            return ret_list;
+        }
 
 }
 

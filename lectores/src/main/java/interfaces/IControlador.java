@@ -1,13 +1,23 @@
 package interfaces;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
+import datatypes.DtMaterial;
 import datatypes.EstadoLector;
 import datatypes.EstadoPrestamo;
 import datatypes.Zona;
-import datatypes.DtMaterial;
-import excepciones.*;
-import java.sql.Date;
+import excepciones.CantidadDePaginasNoValidaException;
+import excepciones.DescripcionNoValidaException;
+import excepciones.EmpleadoyCasteoNoValidoException;
+import excepciones.ExisteUsuarioException;
+import excepciones.FechasIncorrectasException;
+import excepciones.NoExisteUsuarioException;
+import excepciones.PesoNoValidoException;
+import excepciones.PrestamoIncorrectoException;
+import excepciones.TituloNoValidoException;
+import excepciones.ValorIncorrectoDeEstadoException;
+import excepciones.ValorIncorrectoDeZonaException;
 
 public interface IControlador{
     /// Usuarios
@@ -34,4 +44,6 @@ public interface IControlador{
     //3)
     public void agregarPrestamo(String lec_mail, String bib_mail, String numEmpleado, Integer mat_id, Date fecha_sol,  Date fecha_dev, EstadoPrestamo estado)
         throws EmpleadoyCasteoNoValidoException, FechasIncorrectasException, PrestamoIncorrectoException;
+
+    public ArrayList<String> obtenerMailLectores();
 }

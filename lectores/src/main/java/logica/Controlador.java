@@ -4,13 +4,20 @@ package logica;
 
 import java.sql.Date;
 import java.util.ArrayList;
+
 import datatypes.DtMaterial;
 import datatypes.EstadoLector;
 import datatypes.EstadoPrestamo;
 import datatypes.Zona;
-import excepciones.*;
+import excepciones.CantidadDePaginasNoValidaException;
+import excepciones.DescripcionNoValidaException;
+import excepciones.ExisteUsuarioException;
+import excepciones.NoExisteUsuarioException;
+import excepciones.PesoNoValidoException;
+import excepciones.TituloNoValidoException;
+import excepciones.ValorIncorrectoDeEstadoException;
+import excepciones.ValorIncorrectoDeZonaException;
 import interfaces.IControlador;
-
 import jakarta.persistence.EntityManager;
 import persistencia.Conexion;
 
@@ -187,6 +194,10 @@ public class Controlador implements IControlador{
         return new java.sql.Date(System.currentTimeMillis());
     }
 
+    public ArrayList<String> obtenerMailLectores(){
+        ManejadorUsuario MU = ManejadorUsuario.getInstancia();
+        return MU.obtenerLectores();
+    }
 };
 
 
