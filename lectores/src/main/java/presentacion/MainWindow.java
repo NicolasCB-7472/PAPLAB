@@ -184,6 +184,10 @@ public class MainWindow implements ActionListener {
                     DonacionesRegistradasWindow donacionesWindow = new DonacionesRegistradasWindow(controlador);
                     donacionesWindow.show();
                     break;
+                case "Agregar Prestamo":
+                    AgregarPrestamoWindow agregarPrestamo = new AgregarPrestamoWindow(controlador);
+                    agregarPrestamo.setVisible(true);
+                    break;
             }
         }
     }
