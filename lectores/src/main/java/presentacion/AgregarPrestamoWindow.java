@@ -1,36 +1,46 @@
 package presentacion;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import interfaces.IControlador;
-import logica.ManejadorUsuario;
-import logica.ManejadorMaterial;
-import logica.Usuario;
-import logica.Lector;
-import logica.Bibliotecario;
-import logica.Material;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.SpinnerDateModel;
+import javax.swing.SwingConstants;
+
 import datatypes.EstadoPrestamo;
-import excepciones.*;
+import excepciones.EmpleadoyCasteoNoValidoException;
+import excepciones.FechasIncorrectasException;
+import excepciones.PrestamoIncorrectoException;
+import interfaces.IControlador;
 
 public class AgregarPrestamoWindow extends JFrame {
     
     private static final long serialVersionUID = 1L;
     
     private IControlador controlador;
-    private ManejadorUsuario manejadorUsuario;
-    private ManejadorMaterial manejadorMaterial;
+
     
     // Componentes de la interfaz
-    private JComboBox<String> comboBoxLector;
-    private JComboBox<String> comboBoxBibliotecario;
+    private FilterComboBox comboBoxLector;
+    private FilterComboBox comboBoxBibliotecario;
     private JTextField textFieldNumEmpleado;
-    private JComboBox<Integer> comboBoxMaterial;
+    private FilterComboBox comboBoxMaterial;
     private JSpinner spinnerFechaSolicitud;
     private JSpinner spinnerFechaDevolucion;
     private JComboBox<EstadoPrestamo> comboBoxEstado;
@@ -40,8 +50,6 @@ public class AgregarPrestamoWindow extends JFrame {
     
     public AgregarPrestamoWindow(IControlador controlador) {
         this.controlador = controlador;
-        this.manejadorUsuario = ManejadorUsuario.getInstancia();
-        this.manejadorMaterial = ManejadorMaterial.getInstancia();
         
         initializeComponents();
         loadData();
@@ -78,7 +86,7 @@ public class AgregarPrestamoWindow extends JFrame {
         gbc.anchor = GridBagConstraints.WEST;
         mainPanel.add(new JLabel("Lector:"), gbc);
         
-        comboBoxLector = new JComboBox<>();
+        comboBoxLector = new FilterComboBox(controlador.obtenerMailLectores());
         gbc.gridx = 1;
         mainPanel.add(comboBoxLector, gbc);
         
@@ -87,7 +95,7 @@ public class AgregarPrestamoWindow extends JFrame {
         gbc.gridy = 2;
         mainPanel.add(new JLabel("Bibliotecario:"), gbc);
         
-        comboBoxBibliotecario = new JComboBox<>();
+        comboBoxBibliotecario = new FilterComboBox(controlador.obtenerMailBibliotecarios());
         gbc.gridx = 1;
         mainPanel.add(comboBoxBibliotecario, gbc);
         
@@ -104,8 +112,12 @@ public class AgregarPrestamoWindow extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 4;
         mainPanel.add(new JLabel("Material:"), gbc);
-        
-        comboBoxMaterial = new JComboBox<>();
+        ArrayList<Integer> listaId = controlador.obtenerIdMateriales();
+        ArrayList<String> listaStringId = new ArrayList<>();
+        for(Integer I : listaId){
+            listaStringId.add(I.toString());
+        }
+        comboBoxMaterial = new FilterComboBox(listaStringId);
         gbc.gridx = 1;
         mainPanel.add(comboBoxMaterial, gbc);
         
@@ -161,37 +173,6 @@ public class AgregarPrestamoWindow extends JFrame {
             comboBoxBibliotecario.removeAllItems();
             comboBoxMaterial.removeAllItems();
             
-            System.out.println("Cargando datos...");
-            
-            // Cargar lectores
-            ArrayList<String> usuarios = manejadorUsuario.obtenerUsuarios();
-            System.out.println("Total usuarios encontrados: " + usuarios.size());
-            
-            int lectoresCount = 0;
-            int bibliotecariosCount = 0;
-            
-            for (String email : usuarios) {
-                Usuario usuario = manejadorUsuario.buscarUsuario(email);
-                if (usuario instanceof Lector) {
-                    comboBoxLector.addItem(email);
-                    lectoresCount++;
-                    System.out.println("Lector agregado: " + email);
-                } else if (usuario instanceof Bibliotecario) {
-                    comboBoxBibliotecario.addItem(email);
-                    bibliotecariosCount++;
-                    System.out.println("Bibliotecario agregado: " + email);
-                }
-            }
-            
-            System.out.println("Resumen: " + lectoresCount + " lectores, " + bibliotecariosCount + " bibliotecarios");
-            
-            // Cargar materiales
-            ArrayList<Integer> materiales = manejadorMaterial.obtenerMateriales();
-            System.out.println("Materiales encontrados: " + materiales.size());
-            for (Integer id : materiales) {
-                comboBoxMaterial.addItem(id);
-                System.out.println("📖 Material agregado: ID " + id);
-            }
             
             // Establecer fechas por defecto
             Calendar cal = Calendar.getInstance();
@@ -202,19 +183,6 @@ public class AgregarPrestamoWindow extends JFrame {
             
             // Establecer estado por defecto
             comboBoxEstado.setSelectedItem(EstadoPrestamo.PENDIENTE);
-            
-            // Verificar que se cargaron datos
-            if (comboBoxLector.getItemCount() == 0) {
-                System.out.println("ADVERTENCIA: No se cargaron lectores");
-            }
-            if (comboBoxBibliotecario.getItemCount() == 0) {
-                System.out.println("ADVERTENCIA: No se cargaron bibliotecarios");
-            }
-            if (comboBoxMaterial.getItemCount() == 0) {
-                System.out.println("ADVERTENCIA: No se cargaron materiales");
-            }
-            
-            System.out.println("Carga de datos completada");
             
         } catch (Exception e) {
             System.err.println("Error al cargar datos: " + e.getMessage());
@@ -265,7 +233,7 @@ public class AgregarPrestamoWindow extends JFrame {
             String lectorEmail = (String) comboBoxLector.getSelectedItem();
             String bibliotecarioEmail = (String) comboBoxBibliotecario.getSelectedItem();
             String numEmpleado = textFieldNumEmpleado.getText().trim();
-            Integer materialId = (Integer) comboBoxMaterial.getSelectedItem();
+            Integer materialId =  Integer.parseInt((String) comboBoxMaterial.getSelectedItem());
             Date fechaSolicitud = new Date(((java.util.Date) spinnerFechaSolicitud.getValue()).getTime());
             Date fechaDevolucion = new Date(((java.util.Date) spinnerFechaDevolucion.getValue()).getTime());
             EstadoPrestamo estado = (EstadoPrestamo) comboBoxEstado.getSelectedItem();
