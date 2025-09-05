@@ -5,7 +5,6 @@ import java.util.List;
 
 import datatypes.DtBibliotecario;
 import datatypes.DtLector;
-import datatypes.DtUsuario;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import persistencia.Conexion;
