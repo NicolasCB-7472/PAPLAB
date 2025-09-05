@@ -188,6 +188,10 @@ public class MainWindow implements ActionListener {
                     AgregarPrestamoWindow agregarPrestamo = new AgregarPrestamoWindow(controlador);
                     agregarPrestamo.setVisible(true);
                     break;
+                case "Modificar Prestamo":
+                    GestionarPrestamoWindow gestionarPrestamo = new GestionarPrestamoWindow(controlador);
+                    gestionarPrestamo.setVisible(true);
+                    break;
             }
         }
     }

@@ -26,6 +26,7 @@ import javax.swing.SwingConstants;
 import datatypes.EstadoPrestamo;
 import excepciones.EmpleadoyCasteoNoValidoException;
 import excepciones.FechasIncorrectasException;
+import excepciones.NoExisteUsuarioException;
 import excepciones.PrestamoIncorrectoException;
 import interfaces.IControlador;
 
@@ -105,6 +106,8 @@ public class AgregarPrestamoWindow extends JFrame {
         mainPanel.add(new JLabel("Número Empleado:"), gbc);
         
         textFieldNumEmpleado = new JTextField(20);
+        textFieldNumEmpleado.setEditable(false); // Hacer el campo de solo lectura
+        textFieldNumEmpleado.setBackground(getBackground()); // Hacer que se vea como deshabilitado
         gbc.gridx = 1;
         mainPanel.add(textFieldNumEmpleado, gbc);
         
@@ -173,6 +176,23 @@ public class AgregarPrestamoWindow extends JFrame {
             comboBoxBibliotecario.removeAllItems();
             comboBoxMaterial.removeAllItems();
             
+            // Cargar datos de lectores
+            ArrayList<String> lectores = controlador.obtenerMailLectores();
+            for (String lector : lectores) {
+                comboBoxLector.addItem(lector);
+            }
+            
+            // Cargar datos de bibliotecarios
+            ArrayList<String> bibliotecarios = controlador.obtenerMailBibliotecarios();
+            for (String bibliotecario : bibliotecarios) {
+                comboBoxBibliotecario.addItem(bibliotecario);
+            }
+            
+            // Cargar datos de materiales
+            ArrayList<Integer> listaId = controlador.obtenerIdMateriales();
+            for (Integer id : listaId) {
+                comboBoxMaterial.addItem(id.toString());
+            }
             
             // Establecer fechas por defecto
             Calendar cal = Calendar.getInstance();
@@ -222,6 +242,14 @@ public class AgregarPrestamoWindow extends JFrame {
                     JOptionPane.INFORMATION_MESSAGE);
             }
         });
+        
+        // Listener para el ComboBox de bibliotecarios
+        comboBoxBibliotecario.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                actualizarNumeroEmpleado();
+            }
+        });
     }
     
     private void agregarPrestamoAceptarActionPerformed(ActionEvent evt) {
@@ -233,10 +261,18 @@ public class AgregarPrestamoWindow extends JFrame {
             String lectorEmail = (String) comboBoxLector.getSelectedItem();
             String bibliotecarioEmail = (String) comboBoxBibliotecario.getSelectedItem();
             String numEmpleado = textFieldNumEmpleado.getText().trim();
-            Integer materialId =  Integer.parseInt((String) comboBoxMaterial.getSelectedItem());
+            String materialIdStr = (String) comboBoxMaterial.getSelectedItem();
             Date fechaSolicitud = new Date(((java.util.Date) spinnerFechaSolicitud.getValue()).getTime());
             Date fechaDevolucion = new Date(((java.util.Date) spinnerFechaDevolucion.getValue()).getTime());
             EstadoPrestamo estado = (EstadoPrestamo) comboBoxEstado.getSelectedItem();
+            
+            // Validar que el material ID no esté vacío
+            if (materialIdStr == null || materialIdStr.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Error: Debe seleccionar un material válido", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            Integer materialId = Integer.parseInt(materialIdStr);
             
             // Llamar al método del controlador
             controlador.agregarPrestamo(lectorEmail, bibliotecarioEmail, numEmpleado, 
@@ -288,7 +324,7 @@ public class AgregarPrestamoWindow extends JFrame {
         }
         
         if (textFieldNumEmpleado.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debe ingresar el número de empleado", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un bibliotecario válido para obtener el número de empleado", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         
@@ -309,10 +345,18 @@ public class AgregarPrestamoWindow extends JFrame {
     }
     
     private void limpiarFormulario() {
-        comboBoxLector.setSelectedIndex(0);
-        comboBoxBibliotecario.setSelectedIndex(0);
+        // Limpiar selecciones de manera segura
+        if (comboBoxLector.getItemCount() > 0) {
+            comboBoxLector.setSelectedIndex(0);
+        }
+        if (comboBoxBibliotecario.getItemCount() > 0) {
+            comboBoxBibliotecario.setSelectedIndex(0);
+        }
+        if (comboBoxMaterial.getItemCount() > 0) {
+            comboBoxMaterial.setSelectedIndex(0);
+        }
+        
         textFieldNumEmpleado.setText("");
-        comboBoxMaterial.setSelectedIndex(0);
         
         Calendar cal = Calendar.getInstance();
         spinnerFechaSolicitud.setValue(cal.getTime());
@@ -321,5 +365,23 @@ public class AgregarPrestamoWindow extends JFrame {
         spinnerFechaDevolucion.setValue(cal.getTime());
         
         comboBoxEstado.setSelectedItem(EstadoPrestamo.PENDIENTE);
+    }
+    
+    private void actualizarNumeroEmpleado() {
+        try {
+            String bibliotecarioSeleccionado = (String) comboBoxBibliotecario.getSelectedItem();
+            if (bibliotecarioSeleccionado != null && !bibliotecarioSeleccionado.isEmpty()) {
+                String numeroEmpleado = controlador.obtenerNumeroEmpleadoBibliotecario(bibliotecarioSeleccionado);
+                textFieldNumEmpleado.setText(numeroEmpleado);
+            } else {
+                textFieldNumEmpleado.setText("");
+            }
+        } catch (NoExisteUsuarioException e) {
+            textFieldNumEmpleado.setText("");
+            System.err.println("Error al obtener número de empleado: " + e.getMessage());
+        } catch (Exception e) {
+            textFieldNumEmpleado.setText("");
+            System.err.println("Error inesperado al obtener número de empleado: " + e.getMessage());
+        }
     }
 }

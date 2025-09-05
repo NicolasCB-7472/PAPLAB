@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 import datatypes.DtMaterial;
+import datatypes.DtPrestamo;
 import datatypes.EstadoLector;
 import datatypes.EstadoPrestamo;
 import datatypes.Zona;
@@ -45,10 +46,21 @@ public interface IControlador{
     public void agregarPrestamo(String lec_mail, String bib_mail, String numEmpleado, Integer mat_id, Date fecha_sol,  Date fecha_dev, EstadoPrestamo estado)
         throws EmpleadoyCasteoNoValidoException, FechasIncorrectasException, PrestamoIncorrectoException;
 
+    /// Gestión de Préstamos
+    public void actualizarEstadoPrestamo(String lectorEmail, String bibliotecarioEmail, Integer materialId, EstadoPrestamo nuevoEstado) 
+        throws NoExisteUsuarioException, PrestamoIncorrectoException;
+    
+    public ArrayList<DtPrestamo> obtenerPrestamos();
+    
+    public DtPrestamo obtenerPrestamo(String lectorEmail, String bibliotecarioEmail, Integer materialId) 
+        throws PrestamoIncorrectoException;
+
     /// Extras
     public ArrayList<String> obtenerMailLectores();
     
     public ArrayList<String> obtenerMailBibliotecarios();
 
     public ArrayList<Integer> obtenerIdMateriales();
+    
+    public String obtenerNumeroEmpleadoBibliotecario(String emailBibliotecario) throws NoExisteUsuarioException;
 }

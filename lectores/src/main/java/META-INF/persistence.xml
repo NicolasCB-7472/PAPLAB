@@ -8,11 +8,12 @@
         <class>logica.Libro</class>
         <class>logica.Prestamo</class>
     <properties>
-        <property name="hibernate.hbm2ddl.auto" value="create"/>
-        <property name="hibernate.connection.username" value=""/>
-        <property name="hibernate.connection.password" value=""/>
-        <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:<port>/<name>"/>
+        <property name="hibernate.hbm2ddl.auto" value="update"/>
+        <property name="hibernate.connection.username" value="Bruno"/>
+        <property name="hibernate.connection.password" value="1234"/>
+        <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5434/PAP1"/>
         <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+        <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
     </properties>
     </persistence-unit>
 </persistence>
