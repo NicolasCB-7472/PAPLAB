@@ -20,6 +20,6 @@ public class DtUsuario {
 
     @Override
     public String toString(){
-        return "NOMBRE = " + nombre + "\nEMAIL = " + email; 
+        return "|NOMBRE = " + nombre + " \n|EMAIL = " + email; 
     }
 }

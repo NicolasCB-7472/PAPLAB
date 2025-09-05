@@ -30,8 +30,8 @@ public class DtLector extends DtUsuario {
     }
 
     public String toString() {
-        return super.toString() + "\nDIRECCION =" + direccion + "FECHA REGISTRO =" + FechaRegistro +
-                                  "\nESTADO =" + estado + "\nZONA" + zona;
+        return super.toString() + " \n|DIRECCION = " + direccion + " |FECHA REGISTRO = " + FechaRegistro +
+                                  " \n|ESTADO = " + estado + " \n|ZONA= " + zona + "|";
     }
 
 }
