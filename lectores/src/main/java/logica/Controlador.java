@@ -6,20 +6,22 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 import datatypes.DtMaterial;
+import datatypes.DtPrestamo;
 import datatypes.EstadoLector;
 import datatypes.EstadoPrestamo;
 import datatypes.Zona;
 import excepciones.CantidadDePaginasNoValidaException;
 import excepciones.DescripcionNoValidaException;
+import excepciones.EmpleadoyCasteoNoValidoException;
 import excepciones.ExisteUsuarioException;
+import excepciones.FechasIncorrectasException;
 import excepciones.NoExisteUsuarioException;
 import excepciones.PesoNoValidoException;
+import excepciones.PrestamoIncorrectoException;
 import excepciones.TituloNoValidoException;
 import excepciones.ValorIncorrectoDeEstadoException;
 import excepciones.ValorIncorrectoDeZonaException;
 import interfaces.IControlador;
-import jakarta.persistence.EntityManager;
-import persistencia.Conexion;
 
 public class Controlador implements IControlador{
     private static Controlador instancia = null;
@@ -114,7 +116,15 @@ public class Controlador implements IControlador{
         }
     }
 
-    public void agregarPrestamo(String lec_mail, String bib_mail, String numEmpleado, Integer mat_id, Date fecha_sol,  Date fecha_dev, EstadoPrestamo estado){
+    public void agregarPrestamo(String lec_mail, String bib_mail, String numEmpleado, Integer mat_id, Date fecha_sol,  Date fecha_dev, EstadoPrestamo estado)
+        throws EmpleadoyCasteoNoValidoException, FechasIncorrectasException, PrestamoIncorrectoException {
+        
+        // Validar fechas
+        if (fecha_sol.compareTo(fecha_dev) >= 0) {
+            throw new FechasIncorrectasException("La fecha de solicitud debe ser anterior a la fecha de devolución");
+        }
+        
+        // Obtener entidades
         ManejadorUsuario MU = ManejadorUsuario.getInstancia();
         ManejadorMaterial MM = ManejadorMaterial.getInstancia();
         
@@ -122,37 +132,37 @@ public class Controlador implements IControlador{
         Usuario b = MU.buscarUsuario(bib_mail);
         Material m = MM.buscarMaterial_PorID(mat_id);
         
-        if(l != null && b != null && m != null){
-            if(fecha_sol.compareTo(fecha_dev) < 0){
-                //Fecha de solicitud antes que la fecha de devolucion y bibliotecario es empleado. Entonces
-                if((l instanceof Lector) && (b instanceof Bibliotecario) && (m instanceof Material) 
-                    && ((Bibliotecario) b).getNumeroEmpleado().equals(numEmpleado)){   
-                        Prestamo p = new Prestamo((Lector) l,(Bibliotecario) b,(Material) m, fecha_sol, fecha_dev, EstadoPrestamo.EN_CURSO);
-                                    
-                        ((Lector) l).agregarPrestamo(p);
-
-                        ((Bibliotecario) b).agregarPrestamo(p);
-                        
-                        ((Material) m).agregarPrestamo(p);
-
-                        Conexion conexion = Conexion.getInstancia();
-                        EntityManager em = conexion.getEntityManager(); 
-                        em.getTransaction().begin();
-                        //Nota, l, b y m tienen que ser managed por el em. (Que es el mismo en MU y MM, por Conexion.java)
-                        em.persist(p);
-                        em.getTransaction().commit();
-                }else{
-                    //Excepcion casteo incorrecto, o empleado no valido
-                    //throw new EmpleadoyCasteoNoValidoException("Empleado no valido, o casteo incorrecto");
-                }
-            }else{
-                //Excepcion fechas incorrectas
-                //throw new FechasIncorrectasException("La fecha de solicitud es antes que la fecha de devolucion");
-            }
-        }else{
-            //Excepcion no existe alguien
-            //throw new PrestamoIncorrectoException("Lector, biblitoecario, o material no se encuentran");
+        // Validar que existen las entidades
+        if (l == null || b == null || m == null) {
+            throw new PrestamoIncorrectoException("Lector, bibliotecario o material no se encuentran");
         }
+        
+        // Validar tipos y empleado
+        if (!(l instanceof Lector)) {
+            throw new EmpleadoyCasteoNoValidoException("El email no corresponde a un lector");
+        }
+        
+        if (!(b instanceof Bibliotecario)) {
+            throw new EmpleadoyCasteoNoValidoException("El email no corresponde a un bibliotecario");
+        }
+        
+        Bibliotecario bibliotecario = (Bibliotecario) b;
+        if (!bibliotecario.getNumeroEmpleado().equals(numEmpleado)) {
+            throw new EmpleadoyCasteoNoValidoException("El número de empleado no coincide con el bibliotecario");
+        }
+        
+        // Crear préstamo
+        Lector lector = (Lector) l;
+        Prestamo prestamo = new Prestamo(lector, bibliotecario, m, fecha_sol, fecha_dev, EstadoPrestamo.EN_CURSO);
+        
+        // Agregar préstamo a las entidades relacionadas
+        lector.agregarPrestamo(prestamo);
+        bibliotecario.agregarPrestamo(prestamo);
+        m.agregarPrestamo(prestamo);
+        
+        // Persistir en la base de datos usando el manejador
+        ManejadorPrestamo MP = ManejadorPrestamo.getInstancia();
+        MP.agregarPrestamo(prestamo);
     }
 
 
@@ -207,6 +217,84 @@ public class Controlador implements IControlador{
     public ArrayList<Integer> obtenerIdMateriales(){
         ManejadorMaterial MM = ManejadorMaterial.getInstancia();
         return MM.obtenerMateriales();
+    }
+    
+    public String obtenerNumeroEmpleadoBibliotecario(String emailBibliotecario) throws NoExisteUsuarioException {
+        ManejadorUsuario MU = ManejadorUsuario.getInstancia();
+        
+        if (!MU.existeUsuario(emailBibliotecario)) {
+            throw new NoExisteUsuarioException("No existe un bibliotecario con el email: " + emailBibliotecario);
+        }
+        
+        Usuario usuario = MU.darUsuario(emailBibliotecario);
+        if (usuario instanceof Bibliotecario) {
+            Bibliotecario bibliotecario = (Bibliotecario) usuario;
+            return bibliotecario.getNumeroEmpleado();
+        } else {
+            throw new NoExisteUsuarioException("El email no corresponde a un bibliotecario");
+        }
+    }
+
+    // Métodos para gestión de préstamos
+    public void actualizarEstadoPrestamo(String lectorEmail, String bibliotecarioEmail, Integer materialId, EstadoPrestamo nuevoEstado) 
+        throws NoExisteUsuarioException, PrestamoIncorrectoException {
+        
+        ManejadorUsuario MU = ManejadorUsuario.getInstancia();
+        ManejadorMaterial MM = ManejadorMaterial.getInstancia();
+        ManejadorPrestamo MP = ManejadorPrestamo.getInstancia();
+        
+        // Verificar que el lector existe
+        if (!MU.existeUsuario(lectorEmail)) {
+            throw new NoExisteUsuarioException("No existe un lector con el email: " + lectorEmail);
+        }
+        
+        // Verificar que el bibliotecario existe
+        if (!MU.existeUsuario(bibliotecarioEmail)) {
+            throw new NoExisteUsuarioException("No existe un bibliotecario con el email: " + bibliotecarioEmail);
+        }
+        
+        // Verificar que el material existe
+        Material material = MM.buscarMaterial_PorID(materialId);
+        if (material == null) {
+            throw new PrestamoIncorrectoException("No existe un material con el ID: " + materialId);
+        }
+        
+        // Buscar el préstamo usando el manejador
+        Prestamo prestamo = MP.buscarPrestamo(lectorEmail, bibliotecarioEmail, materialId);
+        if (prestamo == null) {
+            throw new PrestamoIncorrectoException("No existe un préstamo con los datos proporcionados");
+        }
+        
+        // Actualizar el estado del préstamo
+        prestamo.setEstado(nuevoEstado);
+        
+        // Persistir los cambios usando el manejador
+        MP.actualizarPrestamo(prestamo);
+    }
+    
+    public ArrayList<DtPrestamo> obtenerPrestamos() {
+        ManejadorPrestamo MP = ManejadorPrestamo.getInstancia();
+        return MP.obtenerDataPrestamos();
+    }
+    
+    public DtPrestamo obtenerPrestamo(String lectorEmail, String bibliotecarioEmail, Integer materialId) 
+        throws PrestamoIncorrectoException {
+        
+        ManejadorPrestamo MP = ManejadorPrestamo.getInstancia();
+        Prestamo prestamo = MP.buscarPrestamo(lectorEmail, bibliotecarioEmail, materialId);
+        
+        if (prestamo == null) {
+            throw new PrestamoIncorrectoException("No existe un préstamo con los datos proporcionados");
+        }
+        
+        return new DtPrestamo(
+            prestamo.getLector().getEmail(),
+            prestamo.getBibliotecario().getEmail(),
+            prestamo.getMaterial().getId().toString(),
+            new java.sql.Date(prestamo.getFechaSolicitud().getTime()),
+            new java.sql.Date(prestamo.getFechaDevolucion().getTime()),
+            prestamo.getEstado()
+        );
     }
 
 
