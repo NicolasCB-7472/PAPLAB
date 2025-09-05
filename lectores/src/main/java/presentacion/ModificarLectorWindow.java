@@ -1,7 +1,6 @@
 package presentacion;
 
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import java.awt.event.ActionListener;
