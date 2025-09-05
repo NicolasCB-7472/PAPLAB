@@ -10,6 +10,8 @@ import datatypes.DtPrestamo;
 import datatypes.EstadoLector;
 import datatypes.EstadoPrestamo;
 import datatypes.Zona;
+import datatypes.DtLector;
+import datatypes.DtBibliotecario;
 import excepciones.CantidadDePaginasNoValidaException;
 import excepciones.DescripcionNoValidaException;
 import excepciones.EmpleadoyCasteoNoValidoException;
@@ -295,6 +297,11 @@ public class Controlador implements IControlador{
             new java.sql.Date(prestamo.getFechaDevolucion().getTime()),
             prestamo.getEstado()
         );
+    }
+
+    public ArrayList<DtLector> obtenerDataLectores(){
+        ManejadorUsuario MU = ManejadorUsuario.getInstancia();
+        return MU.obtenerDataLectores();
     }
 
 

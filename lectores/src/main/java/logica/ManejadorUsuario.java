@@ -3,6 +3,9 @@ package logica;
 import java.util.ArrayList;
 import java.util.List;
 
+import datatypes.DtBibliotecario;
+import datatypes.DtLector;
+import datatypes.DtUsuario;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import persistencia.Conexion;
@@ -137,5 +140,50 @@ public class ManejadorUsuario {
             }
             return ret_list;
         }
+
+        public ArrayList<DtLector> obtenerDataLectores(){
+            Conexion conexion = Conexion.getInstancia();
+            EntityManager em = conexion.getEntityManager();
+
+            Query query = em.createQuery("select u from Lector u");
+
+            List<?> rawList = query.getResultList();
+            List<Lector> listUsuario = new ArrayList<>();
+            
+            for(Object obj : rawList){
+                if(obj instanceof Lector){
+                    listUsuario.add((Lector) obj);
+                }
+            }
+            ArrayList<DtLector> ret_list = new ArrayList<>();
+            for(Lector u: listUsuario) {
+                ret_list.add((DtLector) u.getDtUsuario());
+            }
+            return ret_list;
+        }
+        public ArrayList<DtBibliotecario> obtenerDataBibliotecarios(){
+            Conexion conexion = Conexion.getInstancia();
+            EntityManager em = conexion.getEntityManager();
+
+            Query query = em.createQuery("select u from Bibliotecario u");
+
+            List<?> rawList = query.getResultList();
+            List<Bibliotecario> listUsuario = new ArrayList<>();
+            
+            for(Object obj : rawList){
+                if(obj instanceof Bibliotecario){
+                    listUsuario.add((Bibliotecario) obj);
+                }
+            }
+            ArrayList<DtBibliotecario> ret_list = new ArrayList<>();
+            for(Bibliotecario u: listUsuario) {
+                ret_list.add((DtBibliotecario)u.getDtUsuario());
+            }
+            return ret_list;
+        }
+
+        
+
+        
 }
 
