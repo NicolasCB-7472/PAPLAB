@@ -10,7 +10,6 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import interfaces.Fabrica;
@@ -162,11 +161,11 @@ public class MainWindow implements ActionListener {
             switch(text){
                 case "Agregar Bibliotecario":
                     AgregarBibliotecarioWindows agregarBiblio = new AgregarBibliotecarioWindows(controlador);
-                    agregarBiblio.show();
+                    agregarBiblio.setVisible(true);
                     break;
                 case "Agregar Lector": 
                     AgregarLectorWindow agregarLect = new AgregarLectorWindow(controlador);
-                    agregarLect.show();
+                    agregarLect.setVisible(true);
                     break;
                 case "Modificar Lector":
                     ModificarLectorWindow modificarLector = new ModificarLectorWindow(controlador);
@@ -174,7 +173,7 @@ public class MainWindow implements ActionListener {
                     break;
                 case "Agregar Libro":
                     AgregarLibroWindow agregarLibro = new AgregarLibroWindow(controlador);
-                    agregarLibro.show();
+                    agregarLibro.setVisible(true);
                     break;
                 case "Agregar Articulo":
                     AgregarArticuloWindow agregarArticulo = new AgregarArticuloWindow(controlador);
@@ -182,7 +181,7 @@ public class MainWindow implements ActionListener {
                     break;
                 case "Donaciones Registradas":
                     DonacionesRegistradasWindow donacionesWindow = new DonacionesRegistradasWindow(controlador);
-                    donacionesWindow.show();
+                    donacionesWindow.setVisible(true);
                     break;
                 case "Agregar Prestamo":
                     AgregarPrestamoWindow agregarPrestamo = new AgregarPrestamoWindow(controlador);
