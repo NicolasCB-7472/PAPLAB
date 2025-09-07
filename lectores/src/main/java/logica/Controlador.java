@@ -304,7 +304,10 @@ public class Controlador implements IControlador{
         return MU.obtenerDataLectores();
     }
 
-
+    public ArrayList<DtBibliotecario> obtenerDataBibliotecario(){
+        ManejadorUsuario MU = ManejadorUsuario.getInstancia();
+        return MU.obtenerDataBibliotecarios();
+    }
 };
 
 
