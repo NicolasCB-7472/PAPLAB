@@ -67,4 +67,6 @@ public interface IControlador{
     public String obtenerNumeroEmpleadoBibliotecario(String emailBibliotecario) throws NoExisteUsuarioException;
 
     public ArrayList<DtLector> obtenerDataLectores();
+
+    public ArrayList<DtBibliotecario> obtenerDataBibliotecario();
 }

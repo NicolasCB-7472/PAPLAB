@@ -211,6 +211,8 @@ public class MainWindow implements ActionListener {
                     
                     break;
                 case "Bibliotecarios Registrados":
+                    BibliotecariosRegistradosWindow bibliotecariosRegistrados = new BibliotecariosRegistradosWindow(controlador);
+                    bibliotecariosRegistrados.setVisible(true);
                     break;
                 default:
                     JOptionPane.showMessageDialog(window, "Operacion no implementada", "Error", JOptionPane.ERROR_MESSAGE);
