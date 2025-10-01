@@ -9,10 +9,13 @@ import javax.jws.soap.SOAPBinding.ParameterStyle;
 import javax.jws.soap.SOAPBinding.Style;
 import javax.xml.ws.Endpoint;
 
+import datatypes.DtBibliotecario;
 import datatypes.DtLector;
 import datatypes.EstadoLector;
 import datatypes.Zona;
 import excepciones.ExisteUsuarioException;
+import excepciones.NoExisteUsuarioException;
+import excepciones.ValorIncorrectoDeEstadoException;
 import excepciones.ValorIncorrectoDeZonaException;
 import interfaces.Fabrica;
 import interfaces.IControlador;
@@ -57,5 +60,38 @@ public class ControladorPublisher{
             // Zona inválida
             return null;
         }
+    }
+    
+    // ========== CASO DE USO: REGISTRAR BIBLIOTECARIOS ==========
+    @WebMethod
+    public DtBibliotecario registrarBibliotecario(String nombre, String email, String numeroEmpleado) {
+        try {
+            icon.registrarBibliotecario(nombre, email, numeroEmpleado);
+            
+            // Devolver DtBibliotecario con los datos registrados
+            return new DtBibliotecario(nombre, email, numeroEmpleado);
+        } catch (ExisteUsuarioException e) {
+            // Usuario ya existe
+            return null;
+        }
+    }
+    
+    // ========== CASO DE USO: MODIFICAR ESTADO DE LECTOR ==========
+    @WebMethod
+    public boolean cambiarEstadoLector(String email, String nuevoEstado) {
+        try {
+            EstadoLector estado = EstadoLector.valueOf(nuevoEstado);
+            icon.cambiarEstadoLector(email, estado);
+            
+            // Devolver confirmación de éxito
+            return true;
+        } catch (NoExisteUsuarioException e) {
+            // Lector no existe
+            return false;
+        } catch (ValorIncorrectoDeEstadoException e) {
+            // Estado inválido
+            return false;
+        } 
+        
     }
 }
