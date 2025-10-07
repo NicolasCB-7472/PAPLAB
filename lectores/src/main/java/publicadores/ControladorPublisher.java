@@ -2,6 +2,9 @@ package publicadores;
 
 import java.sql.Date;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
@@ -9,12 +12,19 @@ import javax.jws.soap.SOAPBinding.ParameterStyle;
 import javax.jws.soap.SOAPBinding.Style;
 import javax.xml.ws.Endpoint;
 
+import datatypes.DtArticulo;
 import datatypes.DtBibliotecario;
+import datatypes.DtLibro;
 import datatypes.DtLector;
+import datatypes.DtMaterial;
 import datatypes.EstadoLector;
 import datatypes.Zona;
+import excepciones.CantidadDePaginasNoValidaException;
+import excepciones.DescripcionNoValidaException;
 import excepciones.ExisteUsuarioException;
 import excepciones.NoExisteUsuarioException;
+import excepciones.PesoNoValidoException;
+import excepciones.TituloNoValidoException;
 import excepciones.ValorIncorrectoDeEstadoException;
 import excepciones.ValorIncorrectoDeZonaException;
 import interfaces.Fabrica;
@@ -94,4 +104,52 @@ public class ControladorPublisher{
         } 
         
     }
+    
+    // ========== CASO DE USO: REGISTRAR NUEVA DONACIÓN DE LIBROS ==========
+    @WebMethod
+    public DtLibro registrarDonacionLibro(String id, String titulo, int cantPaginas) {
+        try {
+            icon.agregarNuevoLibro(id, titulo, cantPaginas);
+            
+            // Devolver DtLibro con los datos registrados
+            return new DtLibro(id, icon.getFechaActual(), titulo, cantPaginas);
+        } catch (CantidadDePaginasNoValidaException e) {
+            // Cantidad de páginas inválida
+            return null;
+        } catch (TituloNoValidoException e) {
+            // Título inválido
+            return null;
+        }
+    }
+    
+    // ========== CASO DE USO: REGISTRAR NUEVA DONACIÓN DE ARTÍCULO ESPECIAL ==========
+    @WebMethod
+    public DtArticulo registrarDonacionArticulo(String id, String descripcion, float peso, String dimensiones) {
+        try {
+            icon.agregarNuevoArticulo(id, descripcion, peso, dimensiones);
+            
+            // Devolver DtArticulo con los datos registrados
+            return new DtArticulo(id, icon.getFechaActual(), peso, descripcion, dimensiones);
+        } catch (DescripcionNoValidaException e) {
+            // Descripción inválida
+            return null;
+        } catch (PesoNoValidoException e) {
+            // Peso inválido
+            return null;
+        }
+    }
+    
+    // ========== CASO DE USO: CONSULTAR TODAS LAS DONACIONES REGISTRADAS ==========
+    @WebMethod
+    public List<DtMaterial> consultarDonacionesRegistradas() {
+        return icon.consultarDonacionesRegistradas();
+    }
+
+
+    
+
+
+
+
+    
 }
