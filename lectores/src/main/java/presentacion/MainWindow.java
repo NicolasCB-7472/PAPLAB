@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 
 import interfaces.Fabrica;
 import interfaces.IControlador;
+import publicadores.ControladorPublisher;
 
 public class MainWindow implements ActionListener {
 
@@ -61,6 +62,9 @@ public class MainWindow implements ActionListener {
     }
 
     private void initialize(){
+        ControladorPublisher cp = new ControladorPublisher();
+		cp.publicar();	
+
         window = new JFrame();
         window.setTitle("PAP2025");
         window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
