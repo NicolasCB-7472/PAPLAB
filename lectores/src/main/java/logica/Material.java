@@ -9,10 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Id;
 import jakarta.persistence.CascadeType;
-import datatypes.DtMaterial;
-
 
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)

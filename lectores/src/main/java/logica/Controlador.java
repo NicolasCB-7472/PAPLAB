@@ -10,6 +10,8 @@ import datatypes.DtPrestamo;
 import datatypes.EstadoLector;
 import datatypes.EstadoPrestamo;
 import datatypes.Zona;
+import datatypes.DtLector;
+import datatypes.DtBibliotecario;
 import excepciones.CantidadDePaginasNoValidaException;
 import excepciones.DescripcionNoValidaException;
 import excepciones.EmpleadoyCasteoNoValidoException;
@@ -297,7 +299,15 @@ public class Controlador implements IControlador{
         );
     }
 
+    public ArrayList<DtLector> obtenerDataLectores(){
+        ManejadorUsuario MU = ManejadorUsuario.getInstancia();
+        return MU.obtenerDataLectores();
+    }
 
+    public ArrayList<DtBibliotecario> obtenerDataBibliotecario(){
+        ManejadorUsuario MU = ManejadorUsuario.getInstancia();
+        return MU.obtenerDataBibliotecarios();
+    }
 };
 
 

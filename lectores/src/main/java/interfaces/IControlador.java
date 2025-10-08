@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import datatypes.DtMaterial;
 import datatypes.DtPrestamo;
+import datatypes.DtLector;
+import datatypes.DtBibliotecario;
 import datatypes.EstadoLector;
 import datatypes.EstadoPrestamo;
 import datatypes.Zona;
@@ -63,4 +65,8 @@ public interface IControlador{
     public ArrayList<Integer> obtenerIdMateriales();
     
     public String obtenerNumeroEmpleadoBibliotecario(String emailBibliotecario) throws NoExisteUsuarioException;
+
+    public ArrayList<DtLector> obtenerDataLectores();
+
+    public ArrayList<DtBibliotecario> obtenerDataBibliotecario();
 }

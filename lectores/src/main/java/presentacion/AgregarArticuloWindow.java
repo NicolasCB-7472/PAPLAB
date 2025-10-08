@@ -8,8 +8,6 @@ import javax.swing.JFrame;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import interfaces.IControlador;
-import excepciones.ExisteUsuarioException;
-import java.sql.Date;
 
 public class AgregarArticuloWindow extends JFrame {
     private static final long serialVersionUID = 1L;

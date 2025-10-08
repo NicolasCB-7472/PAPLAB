@@ -3,15 +3,11 @@ package presentacion;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import interfaces.IControlador;
-import excepciones.ExisteUsuarioException;
-import datatypes.Zona;
-import java.sql.Date;
 
 public class AgregarLibroWindow extends JFrame {
     private static final long serialVersionUID = 1L;

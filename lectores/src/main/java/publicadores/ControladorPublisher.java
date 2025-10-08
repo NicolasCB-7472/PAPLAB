@@ -5,12 +5,12 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.jws.WebMethod;
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
-import javax.jws.soap.SOAPBinding.ParameterStyle;
-import javax.jws.soap.SOAPBinding.Style;
-import javax.xml.ws.Endpoint;
+import jakarta.jws.WebMethod;
+import jakarta.jws.WebService;
+import jakarta.jws.soap.SOAPBinding;
+import jakarta.jws.soap.SOAPBinding.ParameterStyle;
+import jakarta.jws.soap.SOAPBinding.Style;
+import jakarta.xml.ws.Endpoint;
 
 import datatypes.DtArticulo;
 import datatypes.DtBibliotecario;
@@ -65,9 +65,6 @@ public class ControladorPublisher{
             return new DtLector(nombre, email, direccion, fecha, EstadoLector.ACTIVO, zonaEnum);
         } catch (ExisteUsuarioException e) {
             // Usuario ya existe
-            return null;
-        } catch (ValorIncorrectoDeZonaException e) {
-            // Zona inválida
             return null;
         }
     }

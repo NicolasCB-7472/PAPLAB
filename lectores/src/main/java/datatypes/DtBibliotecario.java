@@ -13,6 +13,6 @@ public class DtBibliotecario extends DtUsuario{
     }
 
     @Override public String toString(){
-        return super.toString() + "\nNUMERO EMPLEADO = " + numero_empleado;
+        return super.toString() + " \n|NUMERO EMPLEADO = " + numero_empleado + "|";
     }
 }

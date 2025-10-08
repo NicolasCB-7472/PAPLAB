@@ -11,6 +11,10 @@ public class DtLector extends DtUsuario {
     public DtLector(String nombre, String email, String address, Date Registro, 
                     EstadoLector estado_lector, Zona zona_lector){
         super(nombre, email);
+        this.direccion=address;
+        this.FechaRegistro=Registro;
+        this.estado=estado_lector;
+        this.zona=zona_lector;
     }
 
     public String getDireccion(){
@@ -30,8 +34,8 @@ public class DtLector extends DtUsuario {
     }
 
     public String toString() {
-        return super.toString() + "\nDIRECCION =" + direccion + "FECHA REGISTRO =" + FechaRegistro +
-                                  "\nESTADO =" + estado + "\nZONA" + zona;
+        return super.toString() + " \n|DIRECCION = " + direccion + " |FECHA REGISTRO = " + FechaRegistro +
+                                  " \n|ESTADO = " + estado + " \n|ZONA= " + zona + "|";
     }
 
 }

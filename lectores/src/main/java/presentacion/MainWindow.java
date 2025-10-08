@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 
 import interfaces.Fabrica;
 import interfaces.IControlador;
+import publicadores.ControladorPublisher;
 
 public class MainWindow implements ActionListener {
 
@@ -31,13 +32,12 @@ public class MainWindow implements ActionListener {
     private JMenu GestionPrestamos;
     private JMenu GestionHistorial;
 
+    // Para el menu
     private JMenuItem agregar_bibliotecario;
     private JMenuItem agregar_lector;
     private JMenuItem modificar_lector;
-
-    // Para el menu
-    private JButton Usuario_button;
-    private JButton Material_button;
+    private JMenuItem lectores_registrados;
+    private JMenuItem bibliotecarios_registrados;
     private JMenuItem agregar_libro;
     private JMenuItem agregar_articulo;
     private JMenuItem donaciones_registradas;
@@ -45,7 +45,10 @@ public class MainWindow implements ActionListener {
     private JMenuItem modificar_prestamo;
     private JMenuItem historial_prestamo;
 
+
     // Para top panel
+    private JButton Usuario_button;
+    private JButton Material_button;
     private JButton Prestamos_button;
     private JButton Historial_button;
     private JLabel title;
@@ -59,6 +62,9 @@ public class MainWindow implements ActionListener {
     }
 
     private void initialize(){
+        ControladorPublisher cp = new ControladorPublisher();
+		cp.publicar();	
+
         window = new JFrame();
         window.setTitle("PAP2025");
         window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -81,11 +87,13 @@ public class MainWindow implements ActionListener {
         agregar_bibliotecario = new JMenuItem("Agregar Bibliotecario");
         agregar_lector = new JMenuItem("Agregar Lector");
         modificar_lector = new JMenuItem("Modificar Lector");
+        lectores_registrados = new JMenuItem("Lectores Registrados");
+        bibliotecarios_registrados = new JMenuItem("Bibliotecarios Registrados");
 
-            // Materiales
-    agregar_libro = new JMenuItem("Agregar Libro");
-    agregar_articulo = new JMenuItem("Agregar Articulo");
-    donaciones_registradas = new JMenuItem("Donaciones Registradas");
+        // Materiales
+        agregar_libro = new JMenuItem("Agregar Libro");
+        agregar_articulo = new JMenuItem("Agregar Articulo");
+        donaciones_registradas = new JMenuItem("Donaciones Registradas");
 
         // Prestamos
         agregar_prestamo = new JMenuItem("Agregar Prestamo");
@@ -98,6 +106,8 @@ public class MainWindow implements ActionListener {
         GestionUsuario.add(agregar_bibliotecario);
         GestionUsuario.add(agregar_lector);
         GestionUsuario.add(modificar_lector);
+        GestionUsuario.add(lectores_registrados);
+        GestionUsuario.add(bibliotecarios_registrados);
 
         GestionMateriales.add(agregar_libro);
         GestionMateriales.add(agregar_articulo);
@@ -125,6 +135,8 @@ public class MainWindow implements ActionListener {
         agregar_prestamo.addActionListener(this);
         modificar_prestamo.addActionListener(this);
         historial_prestamo.addActionListener(this);
+        lectores_registrados.addActionListener(this);
+        bibliotecarios_registrados.addActionListener(this);
     }
 
     private void run_menu(){
@@ -132,6 +144,11 @@ public class MainWindow implements ActionListener {
         Material_button = new JButton("Material_button");
         Prestamos_button = new JButton("Prestamos_button");
         Historial_button = new JButton("Historial_button");
+
+        Usuario_button.setFocusable(false);
+        Material_button.setFocusable(false);
+        Prestamos_button.setFocusable(false);
+        Historial_button.setFocusable(false);
 
         button_panel = new JPanel();
         label_panel = new JPanel();
@@ -162,11 +179,11 @@ public class MainWindow implements ActionListener {
             switch(text){
                 case "Agregar Bibliotecario":
                     AgregarBibliotecarioWindows agregarBiblio = new AgregarBibliotecarioWindows(controlador);
-                    agregarBiblio.show();
+                    agregarBiblio.setVisible(true);
                     break;
                 case "Agregar Lector": 
                     AgregarLectorWindow agregarLect = new AgregarLectorWindow(controlador);
-                    agregarLect.show();
+                    agregarLect.setVisible(true);
                     break;
                 case "Modificar Lector":
                     ModificarLectorWindow modificarLector = new ModificarLectorWindow(controlador);
@@ -174,7 +191,7 @@ public class MainWindow implements ActionListener {
                     break;
                 case "Agregar Libro":
                     AgregarLibroWindow agregarLibro = new AgregarLibroWindow(controlador);
-                    agregarLibro.show();
+                    agregarLibro.setVisible(true);
                     break;
                 case "Agregar Articulo":
                     AgregarArticuloWindow agregarArticulo = new AgregarArticuloWindow(controlador);
@@ -182,7 +199,7 @@ public class MainWindow implements ActionListener {
                     break;
                 case "Donaciones Registradas":
                     DonacionesRegistradasWindow donacionesWindow = new DonacionesRegistradasWindow(controlador);
-                    donacionesWindow.show();
+                    donacionesWindow.setVisible(true);
                     break;
                 case "Agregar Prestamo":
                     AgregarPrestamoWindow agregarPrestamo = new AgregarPrestamoWindow(controlador);
@@ -192,6 +209,18 @@ public class MainWindow implements ActionListener {
                     GestionarPrestamoWindow gestionarPrestamo = new GestionarPrestamoWindow(controlador);
                     gestionarPrestamo.setVisible(true);
                     break;
+                case "Lectores Registrados":
+                    LectoresRegistradosWindow lectoresRegistrados = new LectoresRegistradosWindow(controlador);
+                    lectoresRegistrados.setVisible(true);
+                    
+                    break;
+                case "Bibliotecarios Registrados":
+                    BibliotecariosRegistradosWindow bibliotecariosRegistrados = new BibliotecariosRegistradosWindow(controlador);
+                    bibliotecariosRegistrados.setVisible(true);
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(window, "Operacion no implementada", "Error", JOptionPane.ERROR_MESSAGE);
+                break;
             }
         }
     }
