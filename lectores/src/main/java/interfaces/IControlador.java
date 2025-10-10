@@ -3,10 +3,10 @@ package interfaces;
 import java.sql.Date;
 import java.util.ArrayList;
 
+import datatypes.DtBibliotecario;
+import datatypes.DtLector;
 import datatypes.DtMaterial;
 import datatypes.DtPrestamo;
-import datatypes.DtLector;
-import datatypes.DtBibliotecario;
 import datatypes.EstadoLector;
 import datatypes.EstadoPrestamo;
 import datatypes.Zona;
@@ -69,4 +69,6 @@ public interface IControlador{
     public ArrayList<DtLector> obtenerDataLectores();
 
     public ArrayList<DtBibliotecario> obtenerDataBibliotecario();
+
+    public Date getFechaActual();
 }
