@@ -1,21 +1,12 @@
 package publicadores;
 
 import java.sql.Date;
-
 import java.util.ArrayList;
-import java.util.List;
-
-import jakarta.jws.WebMethod;
-import jakarta.jws.WebService;
-import jakarta.jws.soap.SOAPBinding;
-import jakarta.jws.soap.SOAPBinding.ParameterStyle;
-import jakarta.jws.soap.SOAPBinding.Style;
-import jakarta.xml.ws.Endpoint;
 
 import datatypes.DtArticulo;
 import datatypes.DtBibliotecario;
-import datatypes.DtLibro;
 import datatypes.DtLector;
+import datatypes.DtLibro;
 import datatypes.DtMaterial;
 import datatypes.EstadoLector;
 import datatypes.Zona;
@@ -26,9 +17,14 @@ import excepciones.NoExisteUsuarioException;
 import excepciones.PesoNoValidoException;
 import excepciones.TituloNoValidoException;
 import excepciones.ValorIncorrectoDeEstadoException;
-import excepciones.ValorIncorrectoDeZonaException;
 import interfaces.Fabrica;
 import interfaces.IControlador;
+import jakarta.jws.WebMethod;
+import jakarta.jws.WebService;
+import jakarta.jws.soap.SOAPBinding;
+import jakarta.jws.soap.SOAPBinding.ParameterStyle;
+import jakarta.jws.soap.SOAPBinding.Style;
+import jakarta.xml.ws.Endpoint;
 
 @WebService
 @SOAPBinding(style = Style.RPC, parameterStyle = ParameterStyle.WRAPPED)
@@ -138,8 +134,13 @@ public class ControladorPublisher{
     
     // ========== CASO DE USO: CONSULTAR TODAS LAS DONACIONES REGISTRADAS ==========
     @WebMethod
-    public List<DtMaterial> consultarDonacionesRegistradas() {
-        return icon.consultarDonacionesRegistradas();
+    public DtMaterial[] consultarDonacionesRegistradas() {
+        ArrayList<DtMaterial> materiales = icon.consultarDonacionesRegistradas();
+        DtMaterial[] arrMateriales = new DtMaterial[materiales.size()];
+        for(int i = 0; i < materiales.size(); i++){
+            arrMateriales[i] = materiales.get(i);
+        }
+        return arrMateriales;
     }
 
 
