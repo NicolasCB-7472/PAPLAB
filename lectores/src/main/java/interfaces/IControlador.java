@@ -26,6 +26,8 @@ public interface IControlador{
     /// Usuarios
     //1)
     public void registrarLector(String nombre, String email, String direccion, Zona zona, Date fecha)throws ExisteUsuarioException;
+    
+    public void registrarLectorConPassword(String nombre, String email, String direccion, Zona zona, Date fecha, String password)throws ExisteUsuarioException;
 
     public void registrarBibliotecario(String nombre, String email, String nroEmpleado)throws ExisteUsuarioException;
 
@@ -71,4 +73,7 @@ public interface IControlador{
     public ArrayList<DtBibliotecario> obtenerDataBibliotecario();
 
     public Date getFechaActual();
+    
+    /// Autenticación
+    public boolean autenticarUsuario(String email, String password);
 }
