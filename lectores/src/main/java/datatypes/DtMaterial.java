@@ -1,5 +1,16 @@
 package datatypes;
 import java.sql.Date;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlType;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "DtMaterial", propOrder = {
+    "id",
+    "fechaIngreso",
+})
+
+
 public abstract class DtMaterial  {
     private String id;
     private Date fechaIngreso;

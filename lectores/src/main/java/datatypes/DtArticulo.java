@@ -1,5 +1,16 @@
 package datatypes;
 import java.sql.Date;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlType;
+
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "DtArticulo", propOrder = {
+    "pesoKg",
+    "descripcion",
+    "dimensiones"
+})
     
 public class DtArticulo extends DtMaterial{
     private float pesoKg;

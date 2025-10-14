@@ -1,5 +1,13 @@
 package datatypes;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlType;
 
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "DtBibliotecario", propOrder = {
+    "numero_empleado"
+})
 public class DtBibliotecario extends DtUsuario{
     private String numero_empleado;
 
