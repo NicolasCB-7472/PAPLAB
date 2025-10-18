@@ -1,5 +1,19 @@
 package datatypes;
 import java.sql.Date;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlType;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "DtPrestamo", propOrder = {
+    "lector_mail",
+    "bibliotecario_mail",
+    "material_id",
+    "fechaSolicitud",
+    "fechaDevolucion",
+    "estado"
+})
+
 
 public class DtPrestamo {
     private String lector_mail;
