@@ -142,12 +142,10 @@ public class ControladorPublisher{
         }
         return arrMateriales;
     }
-
-
     
-
-
-
-
-    
+    // ========== CASO DE USO: AUTENTICACIÓN DE USUARIOS ==========
+    @WebMethod
+    public boolean autenticarUsuario(String email, String password) {
+        return icon.autenticarUsuario(email, password);
+    }
 }

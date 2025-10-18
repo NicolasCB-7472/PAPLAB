@@ -49,6 +49,20 @@ public class Controlador implements IControlador{
             MU.agregarUsuario(L);
         }
     }
+    
+    public void  registrarLectorConPassword(String nombre, String email, String direccion, Zona zona, Date fecha, String password)throws ExisteUsuarioException{
+
+        ManejadorUsuario MU = ManejadorUsuario.getInstancia();
+        boolean existe = MU.existeUsuario(email);
+        if(existe){
+            throw new ExisteUsuarioException("Ya existe un usuario con el email dado");
+        }
+        else{
+            Lector L = new Lector(nombre, email, direccion, zona, fecha);
+            L.setPassword(password); // Establecer contraseña
+            MU.agregarUsuario(L);
+        }
+    }
 
     public void registrarBibliotecario(String nombre, String email, String nroEmpleado)throws ExisteUsuarioException{//Definir si nroEmpleado es autoincremental.
         ManejadorUsuario MU = ManejadorUsuario.getInstancia();
@@ -205,6 +219,21 @@ public class Controlador implements IControlador{
     public Date getFechaActual(){
         return new java.sql.Date(System.currentTimeMillis());
     }
+    
+    // ========== MÉTODOS DE AUTENTICACIÓN ==========
+    public boolean autenticarUsuario(String email, String password) {
+        try {
+            ManejadorUsuario MU = ManejadorUsuario.getInstancia();
+            if (MU.existeUsuario(email)) {
+                Usuario usuario = MU.darUsuario(email);
+                return usuario.verificarPassword(password);
+            }
+            return false;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    
 
     public ArrayList<String> obtenerMailLectores(){
         ManejadorUsuario MU = ManejadorUsuario.getInstancia();
