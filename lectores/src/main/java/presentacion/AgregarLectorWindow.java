@@ -1,17 +1,19 @@
 package presentacion;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Date;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import interfaces.IControlador;
-import excepciones.ExisteUsuarioException;
+
 import datatypes.Zona;
-import java.sql.Date;
+import excepciones.ExisteUsuarioException;
+import interfaces.IControlador;
 
 public class AgregarLectorWindow extends JFrame {
     
@@ -21,7 +23,7 @@ public class AgregarLectorWindow extends JFrame {
     
     private JTextField textFieldNombre;
     private JTextField textFieldEmail;
-    private JTextField textFieldApellido;
+    private JTextField textFieldPassword;
     private JTextField textFieldDireccion;
     private JComboBox<String> comboBoxZona;
 
@@ -37,9 +39,9 @@ public class AgregarLectorWindow extends JFrame {
         lblNombre.setBounds(47, 65, 70, 15);
         getContentPane().add(lblNombre);
         
-        JLabel lblApellido = new JLabel("APELLIDO");
-        lblApellido.setBounds(47, 95, 70, 15);
-        getContentPane().add(lblApellido);
+        JLabel lblPassword = new JLabel("PASSWORD");
+        lblPassword.setBounds(47, 95, 70, 15);
+        getContentPane().add(lblPassword);
         
         JLabel lblEmail = new JLabel("EMAIL");
         lblEmail.setBounds(47, 125, 70, 15);
@@ -58,10 +60,10 @@ public class AgregarLectorWindow extends JFrame {
         getContentPane().add(textFieldNombre);
         textFieldNombre.setColumns(10);
         
-        textFieldApellido = new JTextField();
-        textFieldApellido.setBounds(135, 93, 114, 19);
-        getContentPane().add(textFieldApellido);
-        textFieldApellido.setColumns(10);
+        textFieldPassword = new JTextField();
+        textFieldPassword.setBounds(135, 93, 114, 19);
+        getContentPane().add(textFieldPassword);
+        textFieldPassword.setColumns(10);
         
         textFieldEmail = new JTextField();
         textFieldEmail.setBounds(135, 123, 114, 19);
@@ -107,7 +109,7 @@ public class AgregarLectorWindow extends JFrame {
             try {
                 String nombre = this.textFieldNombre.getText();
                 String email = this.textFieldEmail.getText();
-                String apellido = this.textFieldApellido.getText();
+                String password = this.textFieldPassword.getText();
                 String direccion = this.textFieldDireccion.getText();
                 String zonaStr = (String) this.comboBoxZona.getSelectedItem();
                 
@@ -116,7 +118,7 @@ public class AgregarLectorWindow extends JFrame {
                 // Crear fecha actual
                 Date fecha = new Date(System.currentTimeMillis());
                 // Registrar el lector
-                this.icon.registrarLector(nombre, email, direccion, zona, fecha);
+                this.icon.registrarLectorConPassword(nombre, email, direccion, zona, fecha, password);
                 
                 JOptionPane.showMessageDialog(this, "El Lector se ha creado con éxito", "Agregar Lector",
                         JOptionPane.INFORMATION_MESSAGE);
@@ -130,11 +132,11 @@ public class AgregarLectorWindow extends JFrame {
     
     private boolean checkFormulario() {
         String nombre = this.textFieldNombre.getText();
-        String apellido = this.textFieldApellido.getText();
+        String password = this.textFieldPassword.getText();
         String email = this.textFieldEmail.getText();
         String direccion = this.textFieldDireccion.getText();
         
-        if (nombre.isEmpty() || apellido.isEmpty() || email.isEmpty() || direccion.isEmpty()) {
+        if (nombre.isEmpty() || password.isEmpty() || email.isEmpty() || direccion.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No puede haber campos vacíos", "Agregar Lector",
                     JOptionPane.ERROR_MESSAGE);
             return false;
@@ -149,7 +151,7 @@ public class AgregarLectorWindow extends JFrame {
     
     private void limpiarFormulario() {
         textFieldNombre.setText("");
-        textFieldApellido.setText("");
+        textFieldPassword.setText("");
         textFieldEmail.setText("");
         textFieldDireccion.setText("");
         comboBoxZona.setSelectedIndex(0);
