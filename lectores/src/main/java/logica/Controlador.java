@@ -5,13 +5,13 @@ package logica;
 import java.sql.Date;
 import java.util.ArrayList;
 
+import datatypes.DtBibliotecario;
+import datatypes.DtLector;
 import datatypes.DtMaterial;
 import datatypes.DtPrestamo;
 import datatypes.EstadoLector;
 import datatypes.EstadoPrestamo;
 import datatypes.Zona;
-import datatypes.DtLector;
-import datatypes.DtBibliotecario;
 import excepciones.CantidadDePaginasNoValidaException;
 import excepciones.DescripcionNoValidaException;
 import excepciones.EmpleadoyCasteoNoValidoException;
@@ -75,6 +75,20 @@ public class Controlador implements IControlador{
             MU.agregarUsuario(B);
         }
     }
+
+    public void registrarBibliotecarioConPassword(String nombre, String email, String nroEmpleado, String password)throws ExisteUsuarioException{
+        ManejadorUsuario MU = ManejadorUsuario.getInstancia();
+        boolean existe = MU.existeUsuario(email);
+        if(existe){
+            throw new ExisteUsuarioException("Ya existe un usuario con el email dado");
+        }
+        else{
+            Bibliotecario L = new Bibliotecario(nombre, email , nroEmpleado, password);
+            L.setPassword(password); // Establecer contraseña
+            MU.agregarUsuario(L);
+        }
+    }
+
 
     public void cambiarEstadoLector(String email , EstadoLector nuevoEstado) throws NoExisteUsuarioException , ValorIncorrectoDeEstadoException{
         boolean estadoValido = false;

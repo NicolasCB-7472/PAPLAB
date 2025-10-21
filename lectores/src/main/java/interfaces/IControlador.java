@@ -31,6 +31,8 @@ public interface IControlador{
 
     public void registrarBibliotecario(String nombre, String email, String nroEmpleado)throws ExisteUsuarioException;
 
+    public void registrarBibliotecarioConPassword(String nombre, String email, String nroEmpleado, String password)throws ExisteUsuarioException;
+
     public void cambiarEstadoLector(String email , EstadoLector nuevoEstado) throws NoExisteUsuarioException , ValorIncorrectoDeEstadoException;
 
     public void cambiarZonaLector(String email , Zona nuevaZona)throws NoExisteUsuarioException, ValorIncorrectoDeZonaException;

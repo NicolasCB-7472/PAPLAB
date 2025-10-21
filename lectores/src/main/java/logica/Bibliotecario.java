@@ -1,15 +1,14 @@
 package logica;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import datatypes.DtBibliotecario;
 import datatypes.DtUsuario;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 
 @Entity
 @DiscriminatorValue("B")
@@ -30,6 +29,10 @@ public class Bibliotecario extends Usuario {
     }
 
     public Bibliotecario(String username, String mail, String codigo){
+        super(username, mail);
+        this.numeroEmpleado=codigo;
+    }
+    public Bibliotecario(String username, String mail, String codigo, String password){
         super(username, mail);
         this.numeroEmpleado=codigo;
     }
