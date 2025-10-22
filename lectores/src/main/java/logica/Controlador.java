@@ -181,9 +181,11 @@ public class Controlador implements IControlador{
             throw new EmpleadoyCasteoNoValidoException("El número de empleado no coincide con el bibliotecario");
         }
         
+
+        
         // Crear préstamo
         Lector lector = (Lector) l;
-        Prestamo prestamo = new Prestamo(lector, bibliotecario, m, fecha_sol, fecha_dev, EstadoPrestamo.EN_CURSO);
+        Prestamo prestamo = new Prestamo(lector, bibliotecario, m, fecha_sol, fecha_dev, estado);
         
         // Agregar préstamo a las entidades relacionadas
         lector.agregarPrestamo(prestamo);
