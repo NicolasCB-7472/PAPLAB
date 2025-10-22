@@ -10,6 +10,7 @@ import datatypes.DtLibro;
 import datatypes.DtMaterial;
 import datatypes.DtPrestamo;
 import datatypes.EstadoLector;
+import datatypes.EstadoPrestamo;
 import datatypes.Zona;
 import excepciones.CantidadDePaginasNoValidaException;
 import excepciones.DescripcionNoValidaException;
@@ -194,16 +195,27 @@ public class ControladorPublisher{
                                   int materialId, int diaSol, int mesSol, int anioSol, 
                                   int diaDev, int mesDev, int anioDev, String estado) {
         try {
+            // Parsear estado
+            EstadoPrestamo estadoPrestamo =  EstadoPrestamo.PENDIENTE;
+            if(estado.equals("0")){
+                estadoPrestamo = EstadoPrestamo.PENDIENTE;
+            }else if(estado.equals("1")){
+                estadoPrestamo = EstadoPrestamo.EN_CURSO;
+            }else{
+                estadoPrestamo = EstadoPrestamo.DEVUELTO;
+            }
+
+
             // Formatear fechas como yyyy-MM-dd y usar valueOf
             String fechaSolStr = String.format("%04d-%02d-%02d", anioSol, mesSol, diaSol);
             String fechaDevStr = String.format("%04d-%02d-%02d", anioDev, mesDev, diaDev);
             
             Date fechaSolicitud = Date.valueOf(fechaSolStr);
             Date fechaDevolucion = Date.valueOf(fechaDevStr);
-            datatypes.EstadoPrestamo estadoEnum = datatypes.EstadoPrestamo.valueOf(estado);
+            //datatypes.EstadoPrestamo estadoEnum = datatypes.EstadoPrestamo.valueOf(estado);
             
             icon.agregarPrestamo(lectorEmail, bibliotecarioEmail, numeroEmpleado, 
-                               materialId, fechaSolicitud, fechaDevolucion, estadoEnum);
+                               materialId, fechaSolicitud, fechaDevolucion, estadoPrestamo);
             
             return String.format("SUCCESS|%s|%s|%d|%s", lectorEmail, bibliotecarioEmail, materialId, estado);
         } catch (Exception e) {
