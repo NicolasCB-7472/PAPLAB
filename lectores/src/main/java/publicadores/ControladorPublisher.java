@@ -52,30 +52,31 @@ public class ControladorPublisher{
     
     // ========== CASO DE USO: REGISTRAR LECTORES ==========
     @WebMethod
-    public DtLector registrarLector(String nombre, String email, String direccion, String zona, Date fecha) {
+    public String registrarLector(String nombre, String email, String direccion, String zona, int dia, int mes, int anio) {
         try {
             Zona zonaEnum = Zona.valueOf(zona);
+            // Construir Date desde los 3 enteros
+            @SuppressWarnings("deprecation")
+            Date fecha = new Date(anio - 1900, mes - 1, dia);
+            
             icon.registrarLector(nombre, email, direccion, zonaEnum, fecha);
             
-            // Devolver DtLector con los datos registrados
-            return new DtLector(nombre, email, direccion, fecha, EstadoLector.ACTIVO, zonaEnum);
+            // Devolver String con la información
+            return String.format("SUCCESS|%s|%s|%s|%s|%d|%d|%d|ACTIVO", 
+                nombre, email, direccion, zona, dia, mes, anio);
         } catch (ExisteUsuarioException e) {
-            // Usuario ya existe
-            return null;
+            return "ERROR|El usuario ya existe";
         }
     }
     
     // ========== CASO DE USO: REGISTRAR BIBLIOTECARIOS ==========
     @WebMethod
-    public DtBibliotecario registrarBibliotecario(String nombre, String email, String numeroEmpleado) {
+    public String registrarBibliotecario(String nombre, String email, String numeroEmpleado) {
         try {
             icon.registrarBibliotecario(nombre, email, numeroEmpleado);
-            
-            // Devolver DtBibliotecario con los datos registrados
-            return new DtBibliotecario(nombre, email, numeroEmpleado);
+            return String.format("SUCCESS|%s|%s|%s", nombre, email, numeroEmpleado);
         } catch (ExisteUsuarioException e) {
-            // Usuario ya existe
-            return null;
+            return "ERROR|El usuario ya existe";
         }
     }
     
@@ -85,62 +86,85 @@ public class ControladorPublisher{
         try {
             EstadoLector estado = EstadoLector.valueOf(nuevoEstado);
             icon.cambiarEstadoLector(email, estado);
-            
-            // Devolver confirmación de éxito
             return true;
         } catch (NoExisteUsuarioException e) {
-            // Lector no existe
             return false;
         } catch (ValorIncorrectoDeEstadoException e) {
-            // Estado inválido
             return false;
         } 
-        
     }
     
     // ========== CASO DE USO: REGISTRAR NUEVA DONACIÓN DE LIBROS ==========
     @WebMethod
-    public DtLibro registrarDonacionLibro(String id, String titulo, int cantPaginas) {
+    public String registrarDonacionLibro(String id, String titulo, int cantPaginas) {
         try {
             icon.agregarNuevoLibro(id, titulo, cantPaginas);
-            
-            // Devolver DtLibro con los datos registrados
-            return new DtLibro(id, icon.getFechaActual(), titulo, cantPaginas);
+            Date fecha = icon.getFechaActual();
+            @SuppressWarnings("deprecation")
+            String fechaStr = String.format("%d/%d/%d", 
+                fecha.getDate(), fecha.getMonth() + 1, fecha.getYear() + 1900);
+            return String.format("SUCCESS|%s|%s|%s|%d", id, titulo, fechaStr, cantPaginas);
         } catch (CantidadDePaginasNoValidaException e) {
-            // Cantidad de páginas inválida
-            return null;
+            return "ERROR|Cantidad de páginas no válida";
         } catch (TituloNoValidoException e) {
-            // Título inválido
-            return null;
+            return "ERROR|Título no válido";
         }
     }
     
     // ========== CASO DE USO: REGISTRAR NUEVA DONACIÓN DE ARTÍCULO ESPECIAL ==========
     @WebMethod
-    public DtArticulo registrarDonacionArticulo(String id, String descripcion, float peso, String dimensiones) {
+    public String registrarDonacionArticulo(String id, String descripcion, float peso, String dimensiones) {
         try {
             icon.agregarNuevoArticulo(id, descripcion, peso, dimensiones);
-            
-            // Devolver DtArticulo con los datos registrados
-            return new DtArticulo(id, icon.getFechaActual(), peso, descripcion, dimensiones);
+            Date fecha = icon.getFechaActual();
+            @SuppressWarnings("deprecation")
+            String fechaStr = String.format("%d/%d/%d", 
+                fecha.getDate(), fecha.getMonth() + 1, fecha.getYear() + 1900);
+            return String.format("SUCCESS|%s|%s|%s|%.2f|%s", 
+                id, descripcion, fechaStr, peso, dimensiones);
         } catch (DescripcionNoValidaException e) {
-            // Descripción inválida
-            return null;
+            return "ERROR|Descripción no válida";
         } catch (PesoNoValidoException e) {
-            // Peso inválido
-            return null;
+            return "ERROR|Peso no válido";
         }
     }
     
     // ========== CASO DE USO: CONSULTAR TODAS LAS DONACIONES REGISTRADAS ==========
     @WebMethod
-    public DtMaterial[] consultarDonacionesRegistradas() {
-        ArrayList<DtMaterial> materiales = icon.consultarDonacionesRegistradas();
-        DtMaterial[] arrMateriales = new DtMaterial[materiales.size()];
-        for(int i = 0; i < materiales.size(); i++){
-            arrMateriales[i] = materiales.get(i);
+    public String consultarDonacionesRegistradas() {
+        try {
+            ArrayList<DtMaterial> materiales = icon.consultarDonacionesRegistradas();
+            
+            if (materiales == null || materiales.isEmpty()) {
+                return "NO_HAY_DONACIONES";
+            }
+            
+            StringBuilder resultado = new StringBuilder();
+            
+            for (DtMaterial material : materiales) {
+                if (material instanceof DtLibro) {
+                    DtLibro libro = (DtLibro) material;
+                    resultado.append("LIBRO|")
+                             .append("ID: ").append(libro.getId()).append("|")
+                             .append("Título: ").append(libro.getTitulo()).append("|")
+                             .append("Páginas: ").append(libro.getCantPaginas())
+                             .append("\n");
+                } else if (material instanceof DtArticulo) {
+                    DtArticulo articulo = (DtArticulo) material;
+                    resultado.append("ARTICULO|")
+                             .append("ID: ").append(articulo.getId()).append("|")
+                             .append("Descripción: ").append(articulo.getDescripcion()).append("|")
+                             .append("Peso: ").append(articulo.getPeso()).append(" kg|")
+                             .append("Dimensiones: ").append(articulo.getDimensiones())
+                             .append("\n");
+                }
+            }
+            
+            return resultado.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "ERROR: " + e.getMessage();
         }
-        return arrMateriales;
     }
     
     // ========== CASO DE USO: AUTENTICACIÓN DE USUARIOS ==========
