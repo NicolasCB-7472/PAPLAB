@@ -1,14 +1,16 @@
 package presentacion;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import interfaces.IControlador;
+
 import excepciones.ExisteUsuarioException;
+import interfaces.IControlador;
 
 public class AgregarBibliotecarioWindows extends JFrame {
     
@@ -19,6 +21,7 @@ public class AgregarBibliotecarioWindows extends JFrame {
     private JTextField textFieldNombre;
     private JTextField textFieldEmail;
     private JTextField textFieldNumeroEmpleado;
+    private JTextField textFieldPassword;
 
 public AgregarBibliotecarioWindows(IControlador icon) {
     this.icon = icon;
@@ -35,9 +38,13 @@ public AgregarBibliotecarioWindows(IControlador icon) {
     JLabel lblEmail = new JLabel("EMAIL");
     lblEmail.setBounds(47, 95, 70, 15);
     getContentPane().add(lblEmail);
-    
+
+    JLabel lblPassword = new JLabel("PASSWORD");
+    lblPassword.setBounds(47, 125, 70, 15);
+    getContentPane().add(lblPassword);
+
     JLabel lblNumeroEmpleado = new JLabel("NRO. EMPLEADO");
-    lblNumeroEmpleado.setBounds(47, 125, 100, 15);
+    lblNumeroEmpleado.setBounds(47, 155, 100, 15);
     getContentPane().add(lblNumeroEmpleado);
     
     textFieldNombre = new JTextField();
@@ -49,9 +56,14 @@ public AgregarBibliotecarioWindows(IControlador icon) {
     textFieldEmail.setBounds(135, 93, 114, 19);
     getContentPane().add(textFieldEmail);
     textFieldEmail.setColumns(10);
-    
+
+    textFieldPassword = new JTextField();
+    textFieldPassword.setBounds(135, 123, 114, 19);
+    getContentPane().add(textFieldPassword);
+    textFieldPassword.setColumns(10);
+
     textFieldNumeroEmpleado = new JTextField();
-    textFieldNumeroEmpleado.setBounds(135, 123, 114, 19);
+    textFieldNumeroEmpleado.setBounds(135, 153, 114, 19);
     getContentPane().add(textFieldNumeroEmpleado);
     textFieldNumeroEmpleado.setColumns(10);
     
@@ -85,9 +97,9 @@ protected void agregarBibliotecarioAceptarActionPerformed(ActionEvent arg0) {
             String nombre = this.textFieldNombre.getText();
             String email = this.textFieldEmail.getText();
             String numeroEmpleado = this.textFieldNumeroEmpleado.getText();
-            
+            String password = this.textFieldPassword.getText();
             // Registrar el bibliotecario
-            this.icon.registrarBibliotecario(nombre, email, numeroEmpleado);
+            this.icon.registrarBibliotecarioConPassword(nombre, email, numeroEmpleado, password);
             
             JOptionPane.showMessageDialog(this, "El Bibliotecario se ha creado con éxito", "Agregar Bibliotecario",
                     JOptionPane.INFORMATION_MESSAGE);
