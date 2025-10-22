@@ -1,5 +1,16 @@
-<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.1" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+                                 http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
+             version="2.2">
+    
     <persistence-unit name="lectoreshibernate" transaction-type="RESOURCE_LOCAL">
+        
+        <!-- Proveedor JPA: Hibernate -->
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        
+        <!-- Clases de entidad -->
         <class>logica.Usuario</class>
         <class>logica.Bibliotecario</class>
         <class>logica.Lector</class>
@@ -7,13 +18,21 @@
         <class>logica.Articulo</class>
         <class>logica.Libro</class>
         <class>logica.Prestamo</class>
-    <properties>
-        <property name="hibernate.hbm2ddl.auto" value="update"/>
-        <property name="hibernate.connection.username" value="Bruno"/>
-        <property name="hibernate.connection.password" value="1234"/>
-        <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5434/PAP1"/>
-        <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-        <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
-    </properties>
+        
+        <properties>
+            <!-- Configuración de conexión PostgreSQL -->
+            <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5434/PAP1"/>
+            <property name="jakarta.persistence.jdbc.user" value="Bruno"/>
+            <property name="jakarta.persistence.jdbc.password" value="1234"/>
+            
+            <!-- Propiedades de Hibernate -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+        </properties>
+        
     </persistence-unit>
+    
 </persistence>
