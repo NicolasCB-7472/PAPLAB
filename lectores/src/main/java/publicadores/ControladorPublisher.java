@@ -8,6 +8,7 @@ import datatypes.DtBibliotecario;
 import datatypes.DtLector;
 import datatypes.DtLibro;
 import datatypes.DtMaterial;
+import datatypes.DtPrestamo;
 import datatypes.EstadoLector;
 import datatypes.Zona;
 import excepciones.CantidadDePaginasNoValidaException;
@@ -171,5 +172,104 @@ public class ControladorPublisher{
     @WebMethod
     public boolean autenticarUsuario(String email, String password) {
         return icon.autenticarUsuario(email, password);
+    }
+    
+    // ========== CASO DE USO: CAMBIAR ZONA DE LECTOR ==========
+    @WebMethod
+    public boolean cambiarZonaLector(String email, String nuevaZona) {
+        try {
+            Zona zona = Zona.valueOf(nuevaZona);
+            icon.cambiarZonaLector(email, zona);
+            return true;
+        } catch (NoExisteUsuarioException e) {
+            return false;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    
+    // ========== CASO DE USO: AGREGAR PRÉSTAMO ==========
+    @WebMethod
+    public String agregarPrestamo(String lectorEmail, String bibliotecarioEmail, String numeroEmpleado, 
+                                  int materialId, int diaSol, int mesSol, int anioSol, 
+                                  int diaDev, int mesDev, int anioDev, String estado) {
+        try {
+            // Formatear fechas como yyyy-MM-dd y usar valueOf
+            String fechaSolStr = String.format("%04d-%02d-%02d", anioSol, mesSol, diaSol);
+            String fechaDevStr = String.format("%04d-%02d-%02d", anioDev, mesDev, diaDev);
+            
+            Date fechaSolicitud = Date.valueOf(fechaSolStr);
+            Date fechaDevolucion = Date.valueOf(fechaDevStr);
+            datatypes.EstadoPrestamo estadoEnum = datatypes.EstadoPrestamo.valueOf(estado);
+            
+            icon.agregarPrestamo(lectorEmail, bibliotecarioEmail, numeroEmpleado, 
+                               materialId, fechaSolicitud, fechaDevolucion, estadoEnum);
+            
+            return String.format("SUCCESS|%s|%s|%d|%s", lectorEmail, bibliotecarioEmail, materialId, estado);
+        } catch (Exception e) {
+            return "ERROR|" + e.getMessage();
+        }
+    }
+    
+    // ========== CASO DE USO: ACTUALIZAR ESTADO DE PRÉSTAMO ==========
+    @WebMethod
+    public String actualizarEstadoPrestamo(String lectorEmail, String bibliotecarioEmail, 
+                                          int materialId, String nuevoEstado) {
+        try {
+            datatypes.EstadoPrestamo estadoEnum = datatypes.EstadoPrestamo.valueOf(nuevoEstado);
+            icon.actualizarEstadoPrestamo(lectorEmail, bibliotecarioEmail, materialId, estadoEnum);
+            
+            return String.format("SUCCESS|%s|%s|%d|%s", lectorEmail, bibliotecarioEmail, materialId, nuevoEstado);
+        } catch (Exception e) {
+            return "ERROR|" + e.getMessage();
+        }
+    }
+    
+    // ========== CASO DE USO: CONSULTAR PRÉSTAMOS ==========
+    @WebMethod
+    public String consultarPrestamos() {
+        try {
+            ArrayList<DtPrestamo> prestamos = icon.obtenerPrestamos();
+            
+            if (prestamos == null || prestamos.isEmpty()) {
+                return "NO_HAY_PRESTAMOS";
+            }
+            
+            StringBuilder resultado = new StringBuilder();
+            
+            for (DtPrestamo prestamo : prestamos) {
+                resultado.append("PRESTAMO|")
+                         .append("Lector: ").append(prestamo.getLector() != null ? prestamo.getLector() : "N/A").append("|")
+                         .append("Bibliotecario: ").append(prestamo.getBibliotecario() != null ? prestamo.getBibliotecario() : "N/A").append("|")
+                         .append("Material ID: ").append(prestamo.getMaterial()).append("|")
+                         .append("Estado: ").append(prestamo.getEstado() != null ? prestamo.getEstado().toString() : "N/A").append("|")
+                         .append("Fecha Solicitud: ").append(prestamo.getFechaSolicitud() != null ? prestamo.getFechaSolicitud().toString() : "N/A").append("|")
+                         .append("Fecha Devolución: ").append(prestamo.getFechaDevolucion() != null ? prestamo.getFechaDevolucion().toString() : "N/A")
+                         .append("\n");
+            }
+            
+            return resultado.toString();
+        } catch (Exception e) {
+            return "ERROR: " + e.getMessage();
+        }
+    }
+    
+    // ========== MÉTODOS AUXILIARES ==========
+    @WebMethod
+    public String obtenerMailsLectores() {
+        ArrayList<String> emails = icon.obtenerMailLectores();
+        return String.join(",", emails);
+    }
+    
+    @WebMethod
+    public String obtenerMailsBibliotecarios() {
+        ArrayList<String> emails = icon.obtenerMailBibliotecarios();
+        return String.join(",", emails);
+    }
+    
+    @WebMethod
+    public String obtenerIdsMateriales() {
+        ArrayList<Integer> ids = icon.obtenerIdMateriales();
+        return ids.stream().map(String::valueOf).reduce((a, b) -> a + "," + b).orElse("");
     }
 }
