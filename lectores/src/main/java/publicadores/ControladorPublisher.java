@@ -175,6 +175,32 @@ public class ControladorPublisher{
         return icon.autenticarUsuario(email, password);
     }
     
+    // ========== OBTENER TIPO DE USUARIO ==========
+    @WebMethod
+    public String obtenerTipoUsuario(String email) {
+        try {
+            // Intentar buscar en lectores
+            ArrayList<DtLector> lectores = icon.obtenerDataLectores();
+            for (DtLector lector : lectores) {
+                if (lector.getEmail().equals(email)) {
+                    return "LECTOR";
+                }
+            }
+            
+            // Intentar buscar en bibliotecarios
+            ArrayList<DtBibliotecario> bibliotecarios = icon.obtenerDataBibliotecario();
+            for (DtBibliotecario bibliotecario : bibliotecarios) {
+                if (bibliotecario.getEmail().equals(email)) {
+                    return "BIBLIOTECARIO";
+                }
+            }
+            
+            return "NO_EXISTE";
+        } catch (Exception e) {
+            return "ERROR";
+        }
+    }
+    
     // ========== CASO DE USO: CAMBIAR ZONA DE LECTOR ==========
     @WebMethod
     public boolean cambiarZonaLector(String email, String nuevaZona) {
@@ -196,7 +222,7 @@ public class ControladorPublisher{
                                   int diaDev, int mesDev, int anioDev, String estado) {
         try {
             // Parsear estado
-            EstadoPrestamo estadoPrestamo =  EstadoPrestamo.PENDIENTE;
+            EstadoPrestamo estadoPrestamo = EstadoPrestamo.PENDIENTE;
             if(estado.equals("0")){
                 estadoPrestamo = EstadoPrestamo.PENDIENTE;
             }else if(estado.equals("1")){
@@ -227,9 +253,20 @@ public class ControladorPublisher{
     @WebMethod
     public String actualizarEstadoPrestamo(String lectorEmail, String bibliotecarioEmail, 
                                           int materialId, String nuevoEstado) {
+
+        
         try {
-            datatypes.EstadoPrestamo estadoEnum = datatypes.EstadoPrestamo.valueOf(nuevoEstado);
-            icon.actualizarEstadoPrestamo(lectorEmail, bibliotecarioEmail, materialId, estadoEnum);
+            // Parsear estado
+            EstadoPrestamo EstadoValor = EstadoPrestamo.PENDIENTE;
+            if(nuevoEstado.equals("0")){
+                EstadoValor = EstadoPrestamo.PENDIENTE;
+            }else if(nuevoEstado.equals("1")){
+                EstadoValor = EstadoPrestamo.EN_CURSO;
+            }else{
+                EstadoValor = EstadoPrestamo.DEVUELTO;
+            }
+            //datatypes.EstadoPrestamo estadoEnum = datatypes.EstadoPrestamo.valueOf(nuevoEstado);
+            icon.actualizarEstadoPrestamo(lectorEmail, bibliotecarioEmail, materialId, EstadoValor);
             
             return String.format("SUCCESS|%s|%s|%d|%s", lectorEmail, bibliotecarioEmail, materialId, nuevoEstado);
         } catch (Exception e) {
@@ -252,6 +289,46 @@ public class ControladorPublisher{
             for (DtPrestamo prestamo : prestamos) {
                 resultado.append("PRESTAMO|")
                          .append("Lector: ").append(prestamo.getLector() != null ? prestamo.getLector() : "N/A").append("|")
+                         .append("Bibliotecario: ").append(prestamo.getBibliotecario() != null ? prestamo.getBibliotecario() : "N/A").append("|")
+                         .append("Material ID: ").append(prestamo.getMaterial()).append("|")
+                         .append("Estado: ").append(prestamo.getEstado() != null ? prestamo.getEstado().toString() : "N/A").append("|")
+                         .append("Fecha Solicitud: ").append(prestamo.getFechaSolicitud() != null ? prestamo.getFechaSolicitud().toString() : "N/A").append("|")
+                         .append("Fecha Devolución: ").append(prestamo.getFechaDevolucion() != null ? prestamo.getFechaDevolucion().toString() : "N/A")
+                         .append("\n");
+            }
+            
+            return resultado.toString();
+        } catch (Exception e) {
+            return "ERROR: " + e.getMessage();
+        }
+    }
+    
+    // ========== CASO DE USO: CONSULTAR PRÉSTAMOS DE UN LECTOR ESPECÍFICO ==========
+    @WebMethod
+    public String consultarPrestamosPorLector(String lectorEmail) {
+        try {
+            ArrayList<DtPrestamo> todosPrestamos = icon.obtenerPrestamos();
+            
+            if (todosPrestamos == null || todosPrestamos.isEmpty()) {
+                return "NO_HAY_PRESTAMOS";
+            }
+            
+            // Filtrar préstamos del lector específico
+            ArrayList<DtPrestamo> prestamosLector = new ArrayList<>();
+            for (DtPrestamo prestamo : todosPrestamos) {
+                if (prestamo.getLector() != null && prestamo.getLector().equals(lectorEmail)) {
+                    prestamosLector.add(prestamo);
+                }
+            }
+            
+            if (prestamosLector.isEmpty()) {
+                return "NO_HAY_PRESTAMOS";
+            }
+            
+            StringBuilder resultado = new StringBuilder();
+            
+            for (DtPrestamo prestamo : prestamosLector) {
+                resultado.append("PRESTAMO|")
                          .append("Bibliotecario: ").append(prestamo.getBibliotecario() != null ? prestamo.getBibliotecario() : "N/A").append("|")
                          .append("Material ID: ").append(prestamo.getMaterial()).append("|")
                          .append("Estado: ").append(prestamo.getEstado() != null ? prestamo.getEstado().toString() : "N/A").append("|")
